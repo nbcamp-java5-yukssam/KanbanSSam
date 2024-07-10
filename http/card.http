@@ -1,0 +1,13 @@
+## Variables
+@columnId = 1
+
+### 카드 생성
+POST http://localhost:8080/column/{{columnId}}/cards
+Content-Type: application/json
+
+{
+  "title":"카드 제목",
+  "content":"카드 내용",
+  "responsiblePerson":"담당자",
+  "deadline":"2024-07-10T21:36"
+}
