@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <title>보드예시페이지</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/css/board.css">
+    <script src="/js/board.js"></script>
+</head>
+<body>
+<button type="button" id="board-create" onclick="createBtn()">보드생성</button>
+<!-- 보드생성팝업-->
+    <div id="board-popup" class="popup-box">
+        <div class="popup" style="width:410px; height:auto">
+            <h1> 보드 생성 하기</h1>
+            <div id="card-input">
+                <input type="text" id="board-name" name="보드이름" placeholder="보드의 이름을 작성해주세요"><br>
+                <input type="text" id="board-introduction" name="보드설명" placeholder="보드의 내용을 입력해주세요">
+            <div class="modal-footer">
+                <button type="button" class="close" id="exitBtn" onclick="exitBtn()"> 닫기</button>
+                <button type="button" id="createBtn" onclick="createBoard">등록하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
