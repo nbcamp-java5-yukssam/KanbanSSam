@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/api/user/{userId}/board")
+@RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
 
@@ -26,8 +26,8 @@ public class BoardController {
                                       //AuthenticationPrincipal UserDetails userdeatils,
 //                                      BindingResult bindingResult
                                     ) {
-        User user = User.builder().id(1L).build(); // User 객체 ID를 일단 1로고정
-        BoardResponseDto responseDto = boardservice.createBoard(requestDto, user);
+        User manager = User.builder().id(1L).build(); // User 객체 ID를 일단 1로고정
+        BoardResponseDto responseDto = boardservice.createBoard(requestDto, manager);
 
         return ResponseEntity.ok(responseDto);
         }

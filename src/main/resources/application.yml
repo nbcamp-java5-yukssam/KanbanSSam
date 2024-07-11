@@ -10,9 +10,9 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    password: k1045314!
-    username: root
-    url: jdbc:mysql://localhost:3306/kanban
+    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME}
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/KanbanSSam
 
 jwt:
   secret:

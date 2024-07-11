@@ -19,14 +19,14 @@ public class BoardService {
     private final UserRepository userrepository;
 
     @Transactional
-    public  BoardResponseDto createBoard(BoardRequestDto requestDto, User user /* 대신 userdetails*/) {
+    public  BoardResponseDto createBoard(BoardRequestDto requestDto, User manager /* 대신 userdetails*/) {
 //        user = userrepository.findById().orElseThrow(()
 //                -> new CustomException(ErrorType.USER_NOT_FOUND));
 //        if(userRole.enum)
         // TODO : UserID 확인후 userRole 이 Manager 임을 검증하는 if문이 들어와야함
 
         Board board = Board.builder()
-
+                .manager(manager)
                 .name(requestDto.getName())
                 .introduction(requestDto.getIntroduction())
                 .build();
