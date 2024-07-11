@@ -1,8 +1,13 @@
 ## Variables
 @columnId = 1
+@cardId = 1
+
+# security 구현 완료 시 헤더에 토큰 추가
+#accessToken: {{accessToken}}
+#refreshToken: {{refreshToken}}
 
 ### 카드 생성
-POST http://localhost:8080/column/{{columnId}}/cards
+POST http://localhost:8080/columns/{{columnId}}/cards
 Content-Type: application/json
 
 {
@@ -11,3 +16,17 @@ Content-Type: application/json
   "responsiblePerson":"담당자",
   "deadline":"2024-07-10T21:36"
 }
+
+### 카드 수정
+PUT http://localhost:8080/columns/{{columnId}}/cards/{{cardId}}
+Content-Type: application/json
+
+{
+  "title":"카드 제목 수정",
+  "content":"카드 내용 수정",
+  "responsiblePerson":"담당자 수정",
+  "deadline":"2024-07-11T10:28"
+}
+
+### 카드 삭제
+DELETE http://localhost:8080/columns/{{columnId}}/cards/{{cardId}}

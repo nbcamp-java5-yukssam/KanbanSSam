@@ -1,0 +1,10 @@
+## Variables
+@cardId = 20
+
+### 카드 생성
+POST http://localhost:8080/cards/{{cardId}}/comments
+Content-Type: application/json
+
+{
+  "comment":"댓글 내용"
+}
