@@ -54,6 +54,21 @@ public class CardController {
     }
 
     /**
+     * 카드 삭제
+     * @param columnId 컬럼 ID
+     * @param cardId 카드 ID
+     */
+    @ResponseBody
+    @DeleteMapping("/{columnId}/cards/{cardId}")
+    public void deleteCard(
+            @PathVariable Long columnId,
+            @PathVariable Long cardId) {
+        // todo : secutity 구현 완료 시 userDetails 로 수정
+        User user = User.builder().id(1L).build();
+        cardService.deleteCard(cardId, user);
+    }
+
+    /**
      * test용 view
      * @return card.html
      */

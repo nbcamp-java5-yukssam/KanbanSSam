@@ -2,13 +2,18 @@ package com.sparta.kanbanssam.card.entity;
 
 import com.sparta.kanbanssam.card.dto.CardRequestDto;
 import com.sparta.kanbanssam.column.entity.Columns;
+import com.sparta.kanbanssam.comment.entity.Comment;
 import com.sparta.kanbanssam.common.entity.Timestamped;
+import com.sparta.kanbanssam.common.enums.ErrorType;
+import com.sparta.kanbanssam.common.exception.CustomException;
+import com.sparta.kanbanssam.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,36 +24,58 @@ public class Card extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(nullable = false, unique = true)
-    private Long id;                                        // 고유 번호
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "column_id", nullable = false)
-    private Columns column;                                 // 컬럼
+    private Columns columns;
 
     @Column(nullable = false)
-    private String title;                                   // 제목
+    private String title;
 
     @Column
-    private String content;                                 // 내용
+    private String content;
 
     @Column
-    private String responsiblePerson;                       // 담당자
+    private String responsiblePerson;
 
     @Column
-    private LocalDateTime deadline;                         // 마감일자
+    private LocalDateTime deadline;
 
     @Column(nullable = false)
-    private Long orders;                                      // 순서
+    private Long orders;
+
+    @OneToMany(mappedBy = "card", orphanRemoval = true)
+    private List<Comment> commentList;
 
     @Builder
-    public Card(Long id, Columns column, String title, String content, String responsiblePerson, LocalDateTime deadline, Long orders) {
+    public Card(Long id, User user, Columns columns, String title, String content, String responsiblePerson, LocalDateTime deadline, Long orders) {
         this.id = id;
-        this.column = column;
+        this.user = user;
+        this.columns = columns;
         this.title = title;
         this.content = content;
         this.responsiblePerson = responsiblePerson;
         this.deadline = deadline;
         this.orders = orders;
+    }
+
+    /**
+     * 사용자 카드 접근 권한 검증
+     * <p>
+     *     작성자 또는 매니저가 아닌 경우 예외처리
+     * </p>
+     * @param user 회원 정보
+     */
+    public void validateAuthority(User user) {
+        // todo : User 구현 완료 시 UserRole 권한 체크 로직도 추가
+        if (!this.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorType.CARD_ACCESS_FORBIDDEN);
+        }
     }
 
     /**
