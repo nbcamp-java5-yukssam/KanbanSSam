@@ -21,7 +21,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/card/{cardId}/comment")
+    @PostMapping("/cards/{cardId}/comments")
     public ResponseEntity<?> addComment(@PathVariable("cardId") Long cardId, @RequestBody CommentRequestDto requestDto) {
         // todo : secutity 구현 완료 시 userDetails 로 수정
         User user = User.builder().id(1L).build();
@@ -29,6 +29,6 @@ public class CommentController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping("/comment/view")
+    @GetMapping("/comments/view")
     public String cardView() {return "/comment/comment";}
 }

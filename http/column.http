@@ -1,0 +1,11 @@
+### Variables
+@boardId = 1
+
+
+### 컬럼 생성
+POST http://localhost:8080/boards/{{boardId}}/columns
+Content-Type: application/json
+
+{
+  "name":"컬럼 이름33"
+}
