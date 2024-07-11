@@ -2,6 +2,7 @@ package com.sparta.kanbanssam.card.entity;
 
 import com.sparta.kanbanssam.card.dto.CardRequestDto;
 import com.sparta.kanbanssam.column.entity.Columns;
+import com.sparta.kanbanssam.comment.entity.Comment;
 import com.sparta.kanbanssam.common.entity.Timestamped;
 import com.sparta.kanbanssam.common.enums.ErrorType;
 import com.sparta.kanbanssam.common.exception.CustomException;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -46,6 +48,9 @@ public class Card extends Timestamped {
 
     @Column(nullable = false)
     private Long orders;
+
+    @OneToMany(mappedBy = "card", orphanRemoval = true)
+    private List<Comment> commentList;
 
     @Builder
     public Card(Long id, User user, Columns columns, String title, String content, String responsiblePerson, LocalDateTime deadline, Long orders) {

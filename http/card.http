@@ -1,6 +1,6 @@
 ## Variables
-@columnId = 2
-@cardId = 12
+@columnId = 1
+@cardId = 21
 
 # security 구현 완료 시 헤더에 토큰 추가
 #accessToken: {{accessToken}}
