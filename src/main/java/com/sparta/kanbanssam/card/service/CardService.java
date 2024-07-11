@@ -3,8 +3,6 @@ package com.sparta.kanbanssam.card.service;
 import com.sparta.kanbanssam.card.dto.CardRequestDto;
 import com.sparta.kanbanssam.card.dto.CardResponseDto;
 import com.sparta.kanbanssam.card.entity.Card;
-import com.sparta.kanbanssam.card.entity.CardInfo;
-import com.sparta.kanbanssam.card.repository.CardInfoRepository;
 import com.sparta.kanbanssam.card.repository.CardRepository;
 import com.sparta.kanbanssam.column.entity.Columns;
 import com.sparta.kanbanssam.column.repository.ColumnRepository;
@@ -21,7 +19,6 @@ public class CardService {
 
     private final CardRepository cardRepository;
     private final ColumnRepository columnRepository;
-    private final CardInfoRepository cardInfoRepository;
 
     /**
      * 카드 생성
@@ -36,11 +33,11 @@ public class CardService {
         Columns columns = columnRepository.findById(columnId).orElseThrow(
                 ()-> new CustomException(ErrorType.COLUMN_NOT_FOUND));
 
-        // 해당 컬럼에 존재하는 카드 총 개수
-        Long cardCnt = cardInfoRepository.countAllByColumnsId(columnId);
+        Long cardCnt = cardRepository.countAllByColumnsId(columnId);
 
         Card card = Card.builder()
-                .column(columns)
+                .user(user)
+                .columns(columns)
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
                 .responsiblePerson(requestDto.getResponsiblePerson())
@@ -50,13 +47,6 @@ public class CardService {
 
         Card saveCard = cardRepository.save(card);
 
-        CardInfo cardInfo = CardInfo.builder()
-                .user(user)
-                .columns(columns)
-                .card(saveCard)
-                .build();
-
-        cardInfoRepository.save(cardInfo);
         return new CardResponseDto(saveCard);
     }
 
@@ -69,20 +59,34 @@ public class CardService {
      */
     @Transactional
     public CardResponseDto updateCard(Long cardId, CardRequestDto requestDto, User user) {
-        CardInfo cardInfo = cardInfoRepository.findByCardId(cardId)
-                .orElseThrow(()-> new CustomException(ErrorType.CARD_NOT_FOUND));
+        Card card = getCard(cardId);
 
         // 카드 작성자가 아닐 경우 예외처리
         // todo : User 구현 완료 시 UserRole 권한 체크 로직도 추가
-        if (!cardInfo.getUser().getId().equals(user.getId())) {
-            throw new CustomException(ErrorType.CARD_ACCESS_FORBIDDEN);
-        }
-
-        Card card = cardInfo.getCard();
+        card.validateAuthority(user);
         card.update(requestDto);
 
-        Card saveCard = cardRepository.save(card);
+        return new CardResponseDto(card);
+    }
 
-        return new CardResponseDto(saveCard);
+    /**
+     * 카드 삭제
+     * @param cardId 카드 ID
+     * @param user 회원 정보
+     */
+    public void deleteCard(Long cardId, User user) {
+        Card card = getCard(cardId);
+        card.validateAuthority(user);
+        cardRepository.delete(card);
+    }
+
+    /**
+     * Id로 Card 엔티티 찾기
+     * @param cardId 카드 ID
+     * @return 카드 정보
+     */
+    private Card getCard(Long cardId) {
+        return cardRepository.findById(cardId)
+                .orElseThrow(()-> new CustomException(ErrorType.CARD_NOT_FOUND));
     }
 }

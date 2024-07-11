@@ -1,9 +1,12 @@
 package com.sparta.kanbanssam.column.entity;
 
+import com.sparta.kanbanssam.card.entity.Card;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,6 +21,9 @@ public class Columns {
 
     @Column(nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "columns", orphanRemoval = true)
+    private List<Card> cardList;
 
     @Builder
     public Columns(Long id) {
