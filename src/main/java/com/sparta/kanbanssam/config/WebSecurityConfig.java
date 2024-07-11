@@ -73,6 +73,17 @@ public class WebSecurityConfig {
                         .requestMatchers("/users/login").permitAll() //
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
+
+        http.formLogin((formLogin) ->
+                formLogin
+                        .loginPage("/users/view/login-page").permitAll()
+        );
+
+        http.formLogin((formLogin) ->
+                formLogin
+                        .loginPage("/users/view/signup").permitAll()
+        );
+
         // 필터 순서 설정 : 인가 필터 > 인증 필터 > Username ~ 필터
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
