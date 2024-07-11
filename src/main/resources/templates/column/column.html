@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>card</title>
+
+    <!-- jquery, ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/css/column.css">
+    <script src="/js/column.js"></script>
+
+</head>
+<body>
+<button id="column-add" onclick="openAddColumnPopup()">Add Column</button>
+<!-- 폴더 추가 팝업 -->
+<div id="column-container" class="popup-container">
+    <div class="popup" style="width:410px; height:auto">
+        <button id="column-close" class="close" onclick="closeAddColumnPopup()">
+            X
+        </button>
+        <h1>🗂 컬럼 추가하기</h1>
+        <div id="column-input">
+            <input type="text" id="name" name="name" placeholder="컬럼 이름">
+        </div>
+        <button id="add-column-btn" class="cta2" onclick="addColumn()">추가하기</button>
+    </div>
+</div>
+</body>
+</html>
