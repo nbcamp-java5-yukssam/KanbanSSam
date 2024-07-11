@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Table(name="User")
+@Table(name="user")
 @NoArgsConstructor
 public class User extends Timestamped {
 
@@ -35,11 +35,6 @@ public class User extends Timestamped {
     private String refreshToken;
 
 
-//    @Builder
-//    public User(Long id) {
-//        this.id = id;
-//    }
-
     @Builder
     public User(String accountId, String password, String email, String name) {
         this.accountId = accountId;
@@ -51,4 +46,7 @@ public class User extends Timestamped {
     }
 
 
+    public boolean validateRefreshToken(String refreshToken) {
+        return this.refreshToken != null && this.refreshToken.equals(refreshToken);
+    }
 }
