@@ -26,6 +26,6 @@ public class ExceptionManager {
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             builder.append(fieldError.getField()).append(" : ").append(fieldError.getDefaultMessage()).append("\n");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(builder.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ExceptionDto(builder.toString()));
     }
 }
