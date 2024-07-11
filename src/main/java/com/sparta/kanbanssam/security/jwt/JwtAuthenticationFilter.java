@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     )
             );
         } catch (IOException e) {
-            log.error("로그인 시도(attemptAuthentication) 예외 발생" + e.getMessage());
+            log.error("로그인 시도(attemptAuthentication) 예외 발생 {}", e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
     }

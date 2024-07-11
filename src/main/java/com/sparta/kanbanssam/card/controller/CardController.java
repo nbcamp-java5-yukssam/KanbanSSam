@@ -22,14 +22,14 @@ public class CardController {
      * @param requestDto 카드 생성 정보
      * @return 카드 정보
      */
-    @ResponseBody
-    @PostMapping("/{columnId}/cards")
-    public ResponseEntity<?> createCard(@PathVariable Long columnId, @RequestBody CardRequestDto requestDto) {
-        // todo : secutity 구현 완료 시 userDetails 로 수정
-        User user = User.builder().id(1L).build();
-        CardResponseDto responseDto = cardService.createCard(columnId, requestDto, user);
-        return ResponseEntity.ok(responseDto);
-    }
+//    @ResponseBody
+//    @PostMapping("/{columnId}/cards")
+//    public ResponseEntity<?> createCard(@PathVariable Long columnId, @RequestBody CardRequestDto requestDto) {
+//        // todo : secutity 구현 완료 시 userDetails 로 수정
+//        User user = User.builder().id(1L).build();
+//        CardResponseDto responseDto = cardService.createCard(columnId, requestDto, user);
+//        return ResponseEntity.ok(responseDto);
+//    }
 
     @GetMapping("/card/view")
     public String cardView() {

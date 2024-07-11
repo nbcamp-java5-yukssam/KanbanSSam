@@ -21,10 +21,6 @@ public class UserController {
         userService.signUp(requestDto);
         return ResponseEntity.ok("응답부 추후 수정");
     }
-    //회원가입 POST /users
-    //아이디, 패스워드, 이름, 이메일
-
-    //로그인 POST /users/login
 
     //로그아웃 POST /users/logout
 
