@@ -1,7 +1,6 @@
 package com.sparta.kanbanssam.user.controller;
 
 import com.sparta.kanbanssam.user.dto.UserSignUpRequestDto;
-import com.sparta.kanbanssam.user.dto.UserSignUpResponseDto;
 import com.sparta.kanbanssam.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ public class UserController {
     @PostMapping("")
     public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpRequestDto requestDto) {
         userService.signUp(requestDto);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok("응답부 추후 수정");
     }
     //회원가입 POST /users
     //아이디, 패스워드, 이름, 이메일
