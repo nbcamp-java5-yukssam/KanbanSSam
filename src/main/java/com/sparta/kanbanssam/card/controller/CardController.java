@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/column")
+@RequestMapping("/columns")
 @RequiredArgsConstructor
 public class CardController {
 
@@ -72,7 +72,7 @@ public class CardController {
      * test용 view
      * @return card.html
      */
-    @GetMapping("/card/view")
+    @GetMapping("/cards/view")
     public String cardView() {
         return "/card/card";
     }

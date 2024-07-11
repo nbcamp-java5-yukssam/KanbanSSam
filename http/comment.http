@@ -2,7 +2,7 @@
 @cardId = 20
 
 ### 카드 생성
-POST http://localhost:8080/card/{{cardId}}/comment
+POST http://localhost:8080/cards/{{cardId}}/comments
 Content-Type: application/json
 
 {

@@ -13,13 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/board")
+@RequestMapping("/boards")
 @RequiredArgsConstructor
 public class ColumnController {
     private final ColumnService columnService;
 
     @ResponseBody
-    @PostMapping("/{boardId}/column")
+    @PostMapping("/{boardId}/columns")
     public ResponseEntity<?> createColumn(@PathVariable Long boardId, @RequestBody ColumnRequestDto requestDto){
         // todo : secutity 구현 완료 시 userDetails 로 수정
         User user = User.builder().id(1L).build();
@@ -27,7 +27,7 @@ public class ColumnController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping("/column/view")
+    @GetMapping("/columns/view")
     public String columnView() {
         return "/column/column";
     }

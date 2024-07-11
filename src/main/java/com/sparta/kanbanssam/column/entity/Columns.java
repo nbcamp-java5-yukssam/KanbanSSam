@@ -21,17 +21,17 @@ public class Columns {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "board_id",nullable = false)
+    @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "columns", orphanRemoval = true)
-    private List<Card> cardList;
-
     @Column(nullable = false)
     private Long orders;
+
+    @OneToMany(mappedBy = "columns", orphanRemoval = true)
+    private List<Card> cardList;
 
     @Builder
     public Columns(Long id, Board board, String name, Long orders) {
