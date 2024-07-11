@@ -1,5 +1,6 @@
 package com.sparta.kanbanssam.card.entity;
 
+import com.sparta.kanbanssam.card.dto.CardRequestDto;
 import com.sparta.kanbanssam.column.entity.Columns;
 import com.sparta.kanbanssam.common.entity.Timestamped;
 import jakarta.persistence.*;
@@ -48,5 +49,30 @@ public class Card extends Timestamped {
         this.responsiblePerson = responsiblePerson;
         this.deadline = deadline;
         this.orders = orders;
+    }
+
+    /**
+     * 카드 수정
+     * @param requestDto 카드 수정 정보
+     */
+    public void update(CardRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.responsiblePerson = requestDto.getResponsiblePerson();
+        this.deadline = requestDto.getDeadline();
+    }
+
+    /**
+     * 카드 수정
+     * @param title 제목
+     * @param content 내용
+     * @param responsiblePerson 담당자
+     * @param deadline 마감일자
+     */
+    public void update(String title, String content, String responsiblePerson, LocalDateTime deadline) {
+        this.title = title;
+        this.content = content;
+        this.responsiblePerson = responsiblePerson;
+        this.deadline = deadline;
     }
 }

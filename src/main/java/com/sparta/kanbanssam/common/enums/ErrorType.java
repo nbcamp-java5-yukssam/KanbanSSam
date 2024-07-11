@@ -15,7 +15,8 @@ public enum ErrorType {
     COLUMN_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 컬럼입니다."),
 
     // card
-    CARD_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 카드입니다.");
+    CARD_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 카드입니다."),
+    CARD_ACCESS_FORBIDDEN(HttpStatus.FORBIDDEN, "카드 작성자 및 매니저만 접근할 수 있습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
