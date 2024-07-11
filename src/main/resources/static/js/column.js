@@ -26,7 +26,7 @@ function addColumn() {
         success: function (response) {
             console.log(response.title)
             $('#column-container').removeClass('active');
-            alert('카드 추가 성공.');
+            alert('컬럼 추가 성공.');
             window.location.reload();
         },error: err => {
             alert(err.responseJSON.message);
