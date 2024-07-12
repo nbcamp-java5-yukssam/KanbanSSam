@@ -3,7 +3,6 @@ package com.sparta.kanbanssam.board.service;
 import com.sparta.kanbanssam.board.dto.BoardRequestDto;
 import com.sparta.kanbanssam.board.dto.BoardResponseDto;
 import com.sparta.kanbanssam.board.dto.BoardUpdateRequestDto;
-import com.sparta.kanbanssam.board.dto.BoardUpdateResponseDto;
 import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.board.repository.BoardRepository;
 import com.sparta.kanbanssam.common.enums.ErrorType;
@@ -29,7 +28,7 @@ public class BoardService {
                 -> new CustomException(ErrorType.USER_NOT_FOUND));
 
         //유저 Role이 매니저인지 검증하는 로직
-        checkUserRole(user);
+//        checkUserRole(user);
 
         Board board = Board.builder()
                 .name(requestDto.getName())
@@ -48,7 +47,7 @@ public class BoardService {
         Board board = boardRepository.findById(boardId).orElseThrow(()
                 -> new CustomException(ErrorType.BOARD_NOT_FOUND));
         //유저 Role이 매니저인지 검증하는 로직
-        checkUserRole(user);
+//        checkUserRole(user);
         //보드에서 가져온 ID 와 User 의 ID가 다르다면 Exception 발생
         if (!board.getId().equals(user.getId())) {
             new CustomException(ErrorType.BOARD_ACCESS_FORBIDDEN);
