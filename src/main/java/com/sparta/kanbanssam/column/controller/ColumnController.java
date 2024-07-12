@@ -22,7 +22,7 @@ public class ColumnController {
     @PostMapping("/{boardId}/columns")
     public ResponseEntity<?> createColumn(@PathVariable Long boardId, @RequestBody ColumnRequestDto requestDto){
         // todo : secutity 구현 완료 시 userDetails 로 수정
-        User user = User.builder().id(1L).build();
+        User user = User.builder().build();
         ColumnResponseDto responseDto = columnService.createColum(boardId, requestDto, user);
         return ResponseEntity.ok(responseDto);
     }

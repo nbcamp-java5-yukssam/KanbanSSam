@@ -24,7 +24,7 @@ public class CommentController {
     @PostMapping("/cards/{cardId}/comments")
     public ResponseEntity<?> addComment(@PathVariable("cardId") Long cardId, @RequestBody CommentRequestDto requestDto) {
         // todo : secutity 구현 완료 시 userDetails 로 수정
-        User user = User.builder().id(1L).build();
+        User user = User.builder().build();
         CommentCreatedResponseDto responseDto = commentService.createComment(cardId, requestDto, user);
         return ResponseEntity.ok(responseDto);
     }

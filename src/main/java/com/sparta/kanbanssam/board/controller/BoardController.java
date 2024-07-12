@@ -7,10 +7,13 @@ import com.sparta.kanbanssam.board.dto.BoardUpdateRequestDto;
 import com.sparta.kanbanssam.board.dto.BoardUpdateResponseDto;
 import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.board.service.BoardService;
-import com.sparta.kanbanssam.user.entity.User;
+import com.sparta.kanbanssam.security.UserDetailsImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -22,21 +25,22 @@ public class BoardController {
 
     @ResponseBody
     @PostMapping
-    public ResponseEntity<?> createBoard(@RequestBody BoardRequestDto requestDto
-                                      //AuthenticationPrincipal UserDetails userdeatils,
-//                                      BindingResult bindingResult
+    public ResponseEntity<?> createBoard(@RequestBody @Valid  BoardRequestDto requestDto,
+                                      @AuthenticationPrincipal UserDetailsImpl userDetails
                                     ) {
-        User manager = User.builder().id(1L).build(); // User 객체 ID를 일단 1로고정
-        BoardResponseDto responseDto = boardservice.createBoard(requestDto, manager);
+        BoardResponseDto responseDto = boardservice.createBoard(requestDto, userDetails.getUser());
 
         return ResponseEntity.ok(responseDto);
         }
 
+        //상품수정
+    @Transactional
     @PutMapping("/{boardId}")
-    public ResponseEntity<?> findAllBoard(//AuthenticationPrincipal UserDetails userdeatils
-                                          @RequestBody BoardUpdateRequestDto requestDto,
-                                          @PathVariable Long boardId) {
-        Board board = boardservice.updateBoard(boardId, requestDto, );/*userDeails*/
+    public ResponseEntity<?> updateBoard(@RequestBody BoardUpdateRequestDto requestDto,
+                                          @PathVariable Long boardId,
+                                          @AuthenticationPrincipal UserDetailsImpl userdeatils) {
+
+        Board board = boardservice.updateBoard(boardId, requestDto, userdeatils.getUser());
         BoardUpdateResponseDto reponseDto = new BoardUpdateResponseDto(board);
 
         return ResponseEntity.ok(reponseDto);

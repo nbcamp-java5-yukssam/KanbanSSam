@@ -2,8 +2,6 @@
 @boardId = 1
 
 # security 구현 완료 시 헤더에 토큰 추가
-#accessToken: {{accessToken}}
-#refreshToken: {{refreshToken}}
 
 ### 보드 생성
 POST http://localhost:8080/boards
@@ -12,4 +10,13 @@ Content-Type: application/json
 {
   "name":"보드 제목",
   "introduction":"한줄소개"
+}
+
+### 보드 수정
+PUT http://localhost:8080/boards/{{boardId}}
+Content-Type: application/json
+
+{
+  "name":"보드 제목 수정",
+  "introduction":"한줄 소개 수정"
 }

@@ -7,6 +7,7 @@ import com.sparta.kanbanssam.board.dto.BoardUpdateResponseDto;
 import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.board.repository.BoardRepository;
 import com.sparta.kanbanssam.common.enums.ErrorType;
+import com.sparta.kanbanssam.common.enums.UserRole;
 import com.sparta.kanbanssam.common.exception.CustomException;
 import com.sparta.kanbanssam.user.entity.User;
 import com.sparta.kanbanssam.user.repository.UserRepository;
@@ -23,16 +24,17 @@ public class BoardService {
     private final UserRepository userRepository;
 
     @Transactional
-    public  BoardResponseDto createBoard(BoardRequestDto requestDto, User manager /* 대신 userdetails*/) {
-//        user = userRepository.findById().orElseThrow(()
-//                -> new CustomException(ErrorType.USER_NOT_FOUND));
-//        if(userRole.enum)
-        // TODO : UserID 확인후 userRole 이 Manager 임을 검증하는 if문이 들어와야함
+    public  BoardResponseDto createBoard(BoardRequestDto requestDto, User user) {
+        user = userRepository.findByAccountId(user.getAccountId()).orElseThrow(()
+                -> new CustomException(ErrorType.USER_NOT_FOUND));
+
+        //유저 Role이 매니저인지 검증하는 로직
+        checkUserRole(user);
 
         Board board = Board.builder()
-                .manager(manager)
                 .name(requestDto.getName())
                 .introduction(requestDto.getIntroduction())
+                .manager(user)
                 .build();
 
         boardRepository.save(board);
@@ -41,19 +43,26 @@ public class BoardService {
     }
 
     // 보드수정로직
-    public BoardUpdateResponseDto updateBoard(Long boardId, BoardUpdateRequestDto requestDto,User user) {
+    public Board updateBoard(Long boardId, BoardUpdateRequestDto requestDto, User user) {
         //보드 ID 검색 후 Null 값이라면 Exception 발생
         Board board = boardRepository.findById(boardId).orElseThrow(()
                 -> new CustomException(ErrorType.BOARD_NOT_FOUND));
+        //유저 Role이 매니저인지 검증하는 로직
+        checkUserRole(user);
         //보드에서 가져온 ID 와 User 의 ID가 다르다면 Exception 발생
         if (!board.getId().equals(user.getId())) {
             new CustomException(ErrorType.BOARD_ACCESS_FORBIDDEN);
         }
-        // 유저와 보드를 검증한 후 수정하는 메서드
+        // 수정
         board.updateBoard(requestDto);
-
-        return new BoardUpdateResponseDto(board);
+        return board;
     }
 
 
-}
+    //UserRole 이 Manager 인지 검증하는 로직
+    private void checkUserRole(User user) {
+        if (user.getUserRole().equals(UserRole.USER)){
+            throw new CustomException(ErrorType.NO_AUTHENTICATION);}
+        }
+    }
+

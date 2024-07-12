@@ -29,7 +29,7 @@ public class CardController {
             @PathVariable Long columnId,
             @Valid @RequestBody CardRequestDto requestDto) {
         // todo : secutity 구현 완료 시 userDetails 로 수정
-        User user = User.builder().id(1L).build();
+        User user = User.builder().build();
         CardResponseDto responseDto = cardService.createCard(columnId, requestDto, user);
         return ResponseEntity.ok(responseDto);
     }
@@ -48,7 +48,7 @@ public class CardController {
             @PathVariable Long cardId,
             @Valid @RequestBody CardRequestDto requestDto) {
         // todo : secutity 구현 완료 시 userDetails 로 수정
-        User user = User.builder().id(1L).build();
+        User user = User.builder().build();
         CardResponseDto responseDto = cardService.updateCard(cardId, requestDto, user);
         return ResponseEntity.ok(responseDto);
     }
@@ -64,7 +64,7 @@ public class CardController {
             @PathVariable Long columnId,
             @PathVariable Long cardId) {
         // todo : secutity 구현 완료 시 userDetails 로 수정
-        User user = User.builder().id(1L).build();
+        User user = User.builder().build();
         cardService.deleteCard(cardId, user);
     }
 
