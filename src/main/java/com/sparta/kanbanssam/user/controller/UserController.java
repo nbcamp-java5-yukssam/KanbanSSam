@@ -38,9 +38,6 @@ public class UserController {
         userService.signUp(requestDto);
         return ResponseEntity.ok("응답부 추후 수정");
     }
-
-
-
     //로그아웃 POST /users/logout
 
     //회원조회 GET /users
