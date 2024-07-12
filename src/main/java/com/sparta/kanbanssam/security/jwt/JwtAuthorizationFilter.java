@@ -38,7 +38,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String accessToken = jwtUtil.getAccessTokenFromHeader(request);
 
         if(StringUtils.hasText(accessToken)){
-            if(jwtUtil.validateToken(accessToken)){
+            if(jwtUtil.validateToken(request, accessToken)){
                 // accessToken이 유효할 때
                 authenticateWithAccessToken(accessToken);
             } else {
@@ -50,6 +50,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    // accessToken이 유효
     public void authenticateWithAccessToken(String token){
         Claims info = jwtUtil.getUserInfoFromToken(token);
 
@@ -65,7 +66,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     public void validateAndAuthenticateWithRefreshToken(HttpServletRequest request, HttpServletResponse response){
         String refreshToken = jwtUtil.getRefreshTokenFromHeader(request);
 
-        if(StringUtils.hasText(refreshToken) && jwtUtil.validateToken(refreshToken)){
+        if(StringUtils.hasText(refreshToken) && jwtUtil.validateToken(request, refreshToken)){
             Claims info = jwtUtil.getUserInfoFromToken(refreshToken);
             UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(info.getSubject());
             User user = userDetails.getUser();
