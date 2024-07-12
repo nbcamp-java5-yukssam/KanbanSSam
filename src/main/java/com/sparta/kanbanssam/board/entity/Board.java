@@ -1,5 +1,6 @@
 package com.sparta.kanbanssam.board.entity;
 
+import com.sparta.kanbanssam.board.dto.BoardUpdateRequestDto;
 import com.sparta.kanbanssam.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -34,6 +35,9 @@ public class Board {
         this.name = name;
         this.introduction = introduction;
     }
-
+    public void updateBoard(BoardUpdateRequestDto requestDto) {
+        this.name = requestDto.getName();
+        this.introduction = requestDto.getIntroduction();
+    }
 
 }
