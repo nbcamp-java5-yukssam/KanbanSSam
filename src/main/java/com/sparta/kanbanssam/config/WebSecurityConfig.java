@@ -1,9 +1,7 @@
 package com.sparta.kanbanssam.config;
 
 import com.sparta.kanbanssam.security.UserDetailsServiceImpl;
-import com.sparta.kanbanssam.security.jwt.JwtAuthenticationFilter;
-import com.sparta.kanbanssam.security.jwt.JwtAuthorizationFilter;
-import com.sparta.kanbanssam.security.jwt.JwtUtil;
+import com.sparta.kanbanssam.security.jwt.*;
 import com.sparta.kanbanssam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -28,6 +26,8 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final UserRepository userRepository;
 
     // 인증처리를 위한 authenticationManager 처리 : username~Token 설정
@@ -70,6 +70,8 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
+                        .requestMatchers("/users/view/signup").permitAll()
+                        .requestMatchers("/users/view/login-page").permitAll() //
                         .requestMatchers("/users").permitAll()
                         .requestMatchers("/users/login").permitAll()
                         .requestMatchers("/users/view/signup").permitAll()
@@ -79,15 +81,32 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
-        http.formLogin((formLogin) ->
-                formLogin
-                        .loginPage("/users/view/login-page").permitAll()
-        );
-
+        http
+                .formLogin((formLogin) -> formLogin
+                        .loginPage("/users/view/login-page")
+                        .defaultSuccessUrl("/main-page", true)
+                        .permitAll()
+                );
 
         // 필터 순서 설정 : 인가 필터 > 인증 필터 > Username ~ 필터
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+//        //로그아웃
+//        http.logout(logout ->
+//                logout.logoutUrl("/users/logout")
+//                        .addLogoutHandler(jwtLogoutHandler)
+//                        .logoutSuccessHandler(jwtLogoutSuccessHandler)
+//        );
+
+        //예외 검증
+        http.exceptionHandling(exceptionHandling ->
+                exceptionHandling
+                        // AuthenticationEntryPoint 등록
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                        // AccessDeniedHandler 등록
+                        .accessDeniedHandler(jwtAccessDeniedHandler)
+        );
 
         return http.build();
     }
