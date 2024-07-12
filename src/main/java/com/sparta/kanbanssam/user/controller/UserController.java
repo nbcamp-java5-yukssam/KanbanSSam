@@ -46,16 +46,5 @@ public class UserController {
         return ResponseEntity.ok("응답부 추후 수정");
     }
 
-    /**
-     * 회원가입 API
-     * @param userDetails
-     * @return
-     */
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        userService.logout(userDetails.getUsername());
-        return ResponseEntity.ok("응답부 추후 수정");
-    }
-
     //회원조회 GET /users
 }

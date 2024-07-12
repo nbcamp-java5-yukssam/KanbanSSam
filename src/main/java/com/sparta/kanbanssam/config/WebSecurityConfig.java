@@ -1,9 +1,7 @@
 package com.sparta.kanbanssam.config;
 
+import com.sparta.kanbanssam.security.jwt.*;
 import com.sparta.kanbanssam.security.UserDetailsServiceImpl;
-import com.sparta.kanbanssam.security.jwt.JwtAuthenticationFilter;
-import com.sparta.kanbanssam.security.jwt.JwtAuthorizationFilter;
-import com.sparta.kanbanssam.security.jwt.JwtUtil;
 import com.sparta.kanbanssam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -28,6 +26,8 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JwtLogoutSuccessHandler jwtLogoutSuccessHandler;
+    private final JwtLogoutHandler jwtLogoutHandler;
     private final UserRepository userRepository;
 
     // 인증처리를 위한 authenticationManager 처리 : username~Token 설정
@@ -82,6 +82,16 @@ public class WebSecurityConfig {
         http.formLogin((formLogin) ->
                 formLogin
                         .loginPage("/users/view/login-page").permitAll()
+        );
+
+        // 로그아웃
+        // Spring Security 자체의 Logout 기능: 세션 무효화, 쿠키 삭제, SecurityContextHolder 클리어
+        http.logout(logout ->
+                logout.logoutUrl("/users/logout")
+                        //세션 무효화, 인증 토큰 삭제
+                        .addLogoutHandler(jwtLogoutHandler)
+                        //로그아웃 성공
+                        .logoutSuccessHandler(jwtLogoutSuccessHandler)
         );
 
 
