@@ -1,13 +1,10 @@
 ## Variables
 @boardId = 1
 
-# security 구현 완료 시 헤더에 토큰 추가
-#accessToken: {{accessToken}}
-#refreshToken: {{refreshToken}}
-
 ### 보드 생성
 POST http://localhost:8080/boards
 Content-Type: application/json
+Authorization: {{Authorization}}
 
 {
   "name":"보드 제목",
