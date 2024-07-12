@@ -13,11 +13,13 @@ import com.sparta.kanbanssam.user.entity.User;
 import com.sparta.kanbanssam.user.repository.UserRepository;
 import com.sparta.kanbanssam.user.service.UserService;
 import jakarta.validation.Valid;
+import com.sparta.kanbanssam.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +38,12 @@ public class ColumnController {
      */
     @ResponseBody
     @PostMapping("/{boardId}/columns")
-    public ResponseEntity<?> createColumn(@PathVariable Long boardId, @RequestBody ColumnRequestDto requestDto,@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<?> createColumn(
+            @PathVariable Long boardId,
+            @RequestBody ColumnRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails){
+        //ColumnResponseDto responseDto = columnService.createColum(boardId, requestDto, userDetails.getUser());
+
 
         // 로그인된 사용자 정보 가져오기
         User user = userDetails.getUser();

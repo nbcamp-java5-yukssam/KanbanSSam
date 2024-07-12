@@ -6,9 +6,10 @@
 ### 컬럼 생성
 POST http://localhost:8080/boards/{{boardId}}/columns
 Content-Type: application/json
+Authorization: {{Authorization}}
 
 {
-  "name":"컬럼 이름0000"
+  "name":"컬럼 이름1"
 }
 
 

@@ -1,11 +1,13 @@
 package com.sparta.kanbanssam.user.controller;
 
+import com.sparta.kanbanssam.security.UserDetailsImpl;
 import com.sparta.kanbanssam.user.dto.UserSignUpRequestDto;
 import com.sparta.kanbanssam.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +34,11 @@ public class UserController {
         return "/user/signup";
     }
 
+    /**
+     * 회원가입 API
+     * @param requestDto 회원가입 내용
+     * @return
+     */
     @PostMapping("")
     public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpRequestDto requestDto) {
         log.info("찍힐까요!?");
@@ -39,9 +46,16 @@ public class UserController {
         return ResponseEntity.ok("응답부 추후 수정");
     }
 
-
-
-    //로그아웃 POST /users/logout
+    /**
+     * 회원가입 API
+     * @param userDetails
+     * @return
+     */
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        userService.logout(userDetails.getUsername());
+        return ResponseEntity.ok("응답부 추후 수정");
+    }
 
     //회원조회 GET /users
 }

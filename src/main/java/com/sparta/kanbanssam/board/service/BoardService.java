@@ -21,7 +21,7 @@ public class BoardService {
     private final UserRepository userrepository;
 
     @Transactional
-    public  BoardResponseDto createBoard(BoardRequestDto requestDto, User manager /* 대신 userdetails*/) {
+    public  BoardResponseDto createBoard(BoardRequestDto requestDto, User manager) {
 //        user = userrepository.findById().orElseThrow(()
 //                -> new CustomException(ErrorType.USER_NOT_FOUND));
 //        if(userRole.enum)
