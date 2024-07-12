@@ -3,8 +3,8 @@ POST http://localhost:8080/users/login
 Content-Type: application/json
 
 {
-  "accountId": "test1234",
-  "password": "test1234!!"
+  "accountId": "{{accountId}}",
+  "password": "{{password}}"
 }
 
 > {%
@@ -13,7 +13,6 @@ Content-Type: application/json
 
  client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
  client.log("RefreshToken: " + response.headers.valueOf("RefreshToken"));
-
  %}
 
 ### 로그아웃
@@ -25,5 +24,4 @@ RefreshToekn: {{RefreshToken}}
 > {%
     client.global.clear("Authorization");
     client.global.clear("RefreshToken");
-
 %}

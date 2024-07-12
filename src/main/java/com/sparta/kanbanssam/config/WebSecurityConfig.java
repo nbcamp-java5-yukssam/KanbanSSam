@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -70,7 +71,11 @@ public class WebSecurityConfig {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/users").permitAll()
-                        .requestMatchers("/users/login").permitAll() //
+                        .requestMatchers("/users/login").permitAll()
+                        .requestMatchers("/users/view/signup").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/cards/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/columns/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
@@ -79,10 +84,6 @@ public class WebSecurityConfig {
                         .loginPage("/users/view/login-page").permitAll()
         );
 
-        http.formLogin((formLogin) ->
-                formLogin
-                        .loginPage("/users/view/signup").permitAll()
-        );
 
         // 필터 순서 설정 : 인가 필터 > 인증 필터 > Username ~ 필터
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
