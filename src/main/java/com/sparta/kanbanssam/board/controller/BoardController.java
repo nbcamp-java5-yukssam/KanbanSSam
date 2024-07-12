@@ -8,6 +8,7 @@ import com.sparta.kanbanssam.board.dto.BoardUpdateResponseDto;
 import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.board.service.BoardService;
 import com.sparta.kanbanssam.security.UserDetailsImpl;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,9 @@ public class BoardController {
     public ResponseEntity<?> createBoard(@RequestBody @Valid  BoardRequestDto requestDto,
                                       @AuthenticationPrincipal UserDetailsImpl userDetails
                                     ) {
+    public ResponseEntity<?> createBoard(
+            @RequestBody BoardRequestDto requestDto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         BoardResponseDto responseDto = boardservice.createBoard(requestDto, userDetails.getUser());
 
         return ResponseEntity.ok(responseDto);
@@ -39,7 +43,6 @@ public class BoardController {
     public ResponseEntity<?> updateBoard(@RequestBody BoardUpdateRequestDto requestDto,
                                           @PathVariable Long boardId,
                                           @AuthenticationPrincipal UserDetailsImpl userdeatils) {
-
         Board board = boardservice.updateBoard(boardId, requestDto, userdeatils.getUser());
         BoardUpdateResponseDto reponseDto = new BoardUpdateResponseDto(board);
 

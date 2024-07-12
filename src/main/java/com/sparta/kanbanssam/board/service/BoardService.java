@@ -22,7 +22,8 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
-    @Transactional
+     @Transactional
+    //유저가 있는지 확인 후 없다면 Exception
     public  BoardResponseDto createBoard(BoardRequestDto requestDto, User user) {
         user = userRepository.findByAccountId(user.getAccountId()).orElseThrow(()
                 -> new CustomException(ErrorType.USER_NOT_FOUND));
