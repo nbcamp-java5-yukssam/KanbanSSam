@@ -48,4 +48,13 @@ public class UserService {
         //클라이언트에 성공 메시지와 상태코드를 반환한다.
 
     }
+
+    @Transactional
+    public void logout(String accountId) {
+        User user = userRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+
+        user.setRefreshToken(null);
+        userRepository.save(user);
+    }
 }

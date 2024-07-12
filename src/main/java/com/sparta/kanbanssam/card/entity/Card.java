@@ -1,5 +1,6 @@
 package com.sparta.kanbanssam.card.entity;
 
+import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.card.dto.CardRequestDto;
 import com.sparta.kanbanssam.column.entity.Columns;
 import com.sparta.kanbanssam.comment.entity.Comment;
@@ -31,6 +32,10 @@ public class Card extends Timestamped {
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "board_id", nullable = false)
+    private Board board;
+
+    @ManyToOne
     @JoinColumn(name = "column_id", nullable = false)
     private Columns columns;
 
@@ -53,9 +58,10 @@ public class Card extends Timestamped {
     private List<Comment> commentList;
 
     @Builder
-    public Card(Long id, User user, Columns columns, String title, String content, String responsiblePerson, LocalDateTime deadline, Long orders) {
+    public Card(Long id, User user, Board board, Columns columns, String title, String content, String responsiblePerson, LocalDateTime deadline, Long orders) {
         this.id = id;
         this.user = user;
+        this.board = board;
         this.columns = columns;
         this.title = title;
         this.content = content;
