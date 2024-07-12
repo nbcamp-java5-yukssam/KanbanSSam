@@ -60,8 +60,8 @@ public class Columns {
     }
 
     /**
-     * 카드 수정
-     * @param requestDto 카드 수정 정보
+     * 컬럼 수정
+     * @param requestDto 컬럼 수정 정보
      */
     public void update(ColumnRequestDto requestDto) {
         this.name = requestDto.getName();

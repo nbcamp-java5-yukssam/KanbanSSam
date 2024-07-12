@@ -10,6 +10,7 @@ import com.sparta.kanbanssam.column.entity.Columns;
 import com.sparta.kanbanssam.column.repository.ColumnRepository;
 import com.sparta.kanbanssam.common.enums.ErrorType;
 import com.sparta.kanbanssam.common.exception.CustomException;
+import com.sparta.kanbanssam.common.util.AuthorizationUtil;
 import com.sparta.kanbanssam.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class ColumnService {
 
     private final ColumnRepository columnRepository;
     private final BoardRepository boardRepository;
+    private final AuthorizationUtil authorizationUtil;
 
     /**
      * 컬럼 생성
@@ -31,9 +33,9 @@ public class ColumnService {
      */
     @Transactional
     public ColumnResponseDto createColum(Long boardId, ColumnRequestDto requestDto, User user) {
-        // todo : BoardService에 Board 엔티티 조회 메서드 생성 시 수정
-        Board board = boardRepository.findById(boardId).orElseThrow(
-                ()-> new CustomException(ErrorType.BOARD_NOT_FOUND));
+
+        // 사용자가 해당 보드의 관리자임을 확인
+        Board board = authorizationUtil.validateUserIsBoardManager(boardId, user);
 
         // 해당 보드에 존재하는 컬럼 총 개수
         Long columnCnt = columnRepository.countAllByBoardId(boardId);
@@ -61,8 +63,7 @@ public class ColumnService {
     public ColumnResponseDto updateColumn(Long columnId, ColumnRequestDto requestDto, User user) {
         Columns column = getColumn(columnId);
 
-        // 카드 작성자가 아닐 경우 예외처리
-        // todo : User 구현 완료 시 UserRole 권한 체크 로직도 추가
+        // 컬럼 작성자가 아닐 경우 예외처리
         column.validateAuthority(user);
         column.update(requestDto);
 

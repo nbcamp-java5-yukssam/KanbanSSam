@@ -4,6 +4,8 @@ import com.sparta.kanbanssam.board.dto.BoardRequestDto;
 import com.sparta.kanbanssam.board.dto.BoardResponseDto;
 import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.board.repository.BoardRepository;
+import com.sparta.kanbanssam.common.enums.ErrorType;
+import com.sparta.kanbanssam.common.exception.CustomException;
 import com.sparta.kanbanssam.user.entity.User;
 import com.sparta.kanbanssam.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,4 +37,5 @@ public class BoardService {
 
         return new BoardResponseDto(board);
     }
+
 }
