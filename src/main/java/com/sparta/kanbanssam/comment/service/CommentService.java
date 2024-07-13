@@ -29,6 +29,12 @@ public class CommentService {
         Card card = cardRepository.findById(cardId).orElseThrow(
             ()-> new CustomException(ErrorType.CARD_NOT_FOUND));
 
+//        Comment comment = Comment.builder()
+//            .comment(requestDto.getComment())
+//            .user(user)
+//            .card(card)
+//            .build();
+
         Comment comment = Comment.builder()
             .comment(requestDto.getComment())
             .user(user)

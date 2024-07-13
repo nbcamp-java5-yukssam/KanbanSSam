@@ -6,12 +6,12 @@ import lombok.Getter;
 
 @Getter
 public class CommentGetResponseDto {
-    private String userName;
+    private String writerName;
     private String comment;
     private LocalDateTime createdAt;
 
     public CommentGetResponseDto(Comment comment) {
-        this.userName = comment.getUser().getName();
+        this.writerName = comment.getUser().getName();
         this.comment = comment.getComment();
         this.createdAt = comment.getCreatedAt();
     }

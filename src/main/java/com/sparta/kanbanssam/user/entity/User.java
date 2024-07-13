@@ -1,9 +1,11 @@
 package com.sparta.kanbanssam.user.entity;
 
+import com.sparta.kanbanssam.comment.entity.Comment;
 import com.sparta.kanbanssam.common.entity.Timestamped;
 import com.sparta.kanbanssam.common.enums.UserRole;
 import com.sparta.kanbanssam.common.enums.UserStatus;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +35,10 @@ public class User extends Timestamped {
 
     @Setter
     private String refreshToken;
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
+
 
 
     @Builder
