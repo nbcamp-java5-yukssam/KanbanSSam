@@ -75,7 +75,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/users/view/signup").permitAll()
                         .requestMatchers(HttpMethod.GET, "/cards/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/columns/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/boards/**").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 

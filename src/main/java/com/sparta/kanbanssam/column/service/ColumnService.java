@@ -2,15 +2,13 @@ package com.sparta.kanbanssam.column.service;
 
 import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.board.repository.BoardRepository;
-import com.sparta.kanbanssam.card.dto.CardResponseDto;
-import com.sparta.kanbanssam.card.entity.Card;
 import com.sparta.kanbanssam.column.dto.ColumnRequestDto;
 import com.sparta.kanbanssam.column.dto.ColumnResponseDto;
 import com.sparta.kanbanssam.column.entity.Columns;
 import com.sparta.kanbanssam.column.repository.ColumnRepository;
 import com.sparta.kanbanssam.common.enums.ErrorType;
 import com.sparta.kanbanssam.common.exception.CustomException;
-import com.sparta.kanbanssam.common.util.AuthorizationUtil;
+import com.sparta.kanbanssam.common.authorization.AuthorizationService;
 import com.sparta.kanbanssam.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ColumnService {
 
     private final ColumnRepository columnRepository;
-    private final BoardRepository boardRepository;
-    private final AuthorizationUtil authorizationUtil;
+    private final AuthorizationService authorizationService;
 
     /**
      * 컬럼 생성
@@ -34,8 +31,13 @@ public class ColumnService {
     @Transactional
     public ColumnResponseDto createColum(Long boardId, ColumnRequestDto requestDto, User user) {
 
-        // 사용자가 해당 보드의 관리자임을 확인
-        Board board = authorizationUtil.validateUserIsBoardManager(boardId, user);
+        // 요청한 사용자가 해당 보드의 관리자임을 확인
+        Board board = authorizationService.validateUserIsBoardManager(boardId, user);
+
+        // 동일한 이름의 컬럼이 이미 존재하는지 확인
+        if (columnRepository.existsByBoardIdAndName(board.getId(), requestDto.getName())) {
+            throw new CustomException(ErrorType.COLUMN_ALREADY_EXISTS);
+        }
 
         // 해당 보드에 존재하는 컬럼 총 개수
         Long columnCnt = columnRepository.countAllByBoardId(boardId);
@@ -61,10 +63,17 @@ public class ColumnService {
      */
     @Transactional
     public ColumnResponseDto updateColumn(Long columnId, ColumnRequestDto requestDto, User user) {
+
         Columns column = getColumn(columnId);
 
-        // 컬럼 작성자가 아닐 경우 예외처리
-        column.validateAuthority(user);
+        // 컬럼 작성자가 아닐 경우 예외처리(보드 매니저가 아닐경우)
+        Board board =authorizationService.validateUserIsBoardManager(column.getBoard().getId(), user);
+
+        // 동일한 이름의 컬럼이 이미 존재하는지 확인
+        if (columnRepository.existsByBoardIdAndName(board.getId(), requestDto.getName())) {
+            throw new CustomException(ErrorType.COLUMN_ALREADY_EXISTS);
+        }
+
         column.update(requestDto);
 
         return new ColumnResponseDto(column);
