@@ -73,7 +73,7 @@ public class Card extends Timestamped {
      * @param user 회원 정보
      */
     public void validateAuthority(User user) {
-        if (!this.getUser().getId().equals(user.getId()) && !UserRole.MANAGER.equals(user.getUserRole())) {
+        if (!this.user.getId().equals(user.getId()) && !UserRole.MANAGER.equals(user.getUserRole())) {
             throw new CustomException(ErrorType.CARD_ACCESS_FORBIDDEN);
         }
     }
@@ -103,6 +103,11 @@ public class Card extends Timestamped {
         this.deadline = deadline;
     }
 
+    /**
+     * 키드 순서 및 컬럼 이동
+     * @param orders
+     * @param columns
+     */
     public void updateOrders(Long orders, Columns columns) {
         this.columns = columns;
         this.orders = orders;
