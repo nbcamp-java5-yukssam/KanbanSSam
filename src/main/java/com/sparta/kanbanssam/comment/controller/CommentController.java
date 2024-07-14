@@ -31,9 +31,6 @@ public class CommentController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping("/cards/{cardId}/comments/view")
-    public String cardView() {return "/comment/comment";}
-
     @GetMapping("/cards/{cardId}/comments")
     public ResponseEntity<?> getComment(@PathVariable("cardId") Long cardId) {
         return commentService.getComment(cardId);
