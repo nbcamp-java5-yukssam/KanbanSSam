@@ -80,6 +80,20 @@ public class ColumnService {
     }
 
     /**
+     * 컬럼 삭제
+     * @param columnId 컬럼 ID
+     * @param user 회원 정보
+     */
+    @Transactional
+    public void deleteColumn(Long columnId, User user) {
+        Columns column = getColumn(columnId);
+
+        // 컬럼 작성자가 아닐 경우 예외처리(보드 매니저가 아닐경우)
+        authorizationService.validateUserIsBoardManager(column.getBoard().getId(), user);
+        columnRepository.delete(column);
+    }
+
+    /**
      * Id로 Columns 엔티티 찾기
      * @param columnId 컬럼 ID
      * @return 컬럼 정보
