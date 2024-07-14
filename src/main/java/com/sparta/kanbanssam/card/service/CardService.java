@@ -38,6 +38,8 @@ public class CardService {
         Columns columns = columnRepository.findById(columnId).orElseThrow(
                 ()-> new CustomException(ErrorType.COLUMN_NOT_FOUND));
 
+        // todo : 해당 보드에 초대된 사용자인지 확인 필요
+
         Long cardCnt = cardRepository.countAllByColumnsId(columnId);
 
         Card card = Card.builder()

@@ -33,6 +33,8 @@ public enum ErrorType {
 
     // column
     COLUMN_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 컬럼입니다."),
+    COLUMN_ACCESS_FORBIDDEN(HttpStatus.FORBIDDEN, "컬럼을 작성한 매니저만 접근할 수 있습니다."),
+    COLUMN_ALREADY_EXISTS(HttpStatus.LOCKED,"이미 컬럼이 존재합니다."),
 
     // card
     CARD_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 카드입니다."),

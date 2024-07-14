@@ -136,27 +136,42 @@ function updateCard() {
 // 보드 별 전체 카드 목록 조회 API 요청
 function getCardListByBoard() {
     const boardId = document.querySelector(".all-container").id.slice(4);
-    // $.ajax({
-    //     type: 'POST',
-    //     url: `/boards/${boardId}/cards`,
-    //     contentType: 'application/json',
-    //     // Authorization: '',
-    //     data: JSON.stringify(data),
-    //     success: function (response) {
-    //         for (let i = 0; i < response.length; i++) {
-    //                 let card = response[i];
-    //                 let tempHtml = addCardItem(schedule, "show");
-    //                 $('.all-container').append(tempHtml);
-    //             }
-    //     },error: err => {
-    //         alert(err.responseJSON.message);
-    //     }
-    // })
+    $.ajax({
+        type: 'GET',
+        url: `/boards/${boardId}/cards`,
+        success: function (response) {
+            for (let i = 0; i < response.length; i++) {
+                    let card = response[i];
+                    let tempHtml = addAllCardItem(card);
+                    $('.all-container').append(tempHtml);
+                }
+        },error: err => {
+            alert(err.responseJSON.message);
+        }
+    })
 }
 
 // 보드별 전체 카드 목록 HTML 생성
-function addCardItem(schedule, type) {
-    return `<span>append<span/>`;
+function addAllCardItem(card) {
+    return `<div id="all-card-${card.cardId}" class="card">
+            <div class="text">
+                <span>${card.title}</span>
+            </div>
+            <div class="text">
+                <span>담당자 : </span><span>${card.responsiblePerson}</span>
+            </div>
+            <button onclick="location.href='/cards/${card.cardId}'"
+                    type="button">상세</button>
+            <button onclick="deleteCard('${card.id}')"
+                    type="button">삭제</button>
+            <button onclick="openUpdateCardPopup(
+                '${card.id}',
+                '${card.title}',
+                '${card.responsiblePerson}',
+                '${card.content}',
+                '${card.deadline}')"
+                    type="button">수정</button>
+        </div>`;
 }
 
 // 사용자 별 카드 목록 조회 API 요청
@@ -210,6 +225,7 @@ $(document).ready(function () {
         $('div.nav-user').removeClass('active');
         $('div.nav-all').addClass('active');
 
+        $('div.all-container').empty();
         getCardListByBoard()
 
         $('.column-container').hide();

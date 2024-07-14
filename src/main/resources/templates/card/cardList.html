@@ -61,27 +61,7 @@
     </div>
 
     <div th:id="'all-'+${boardId}" class="all-container">
-        <div th:each="cardList : ${cardListByBoard}"
-             th:id="'all-card-'+${cardList.getCardId()}"
-             class="card" draggable="true">
-            <div class="text">
-                <span th:text="${cardList.getTitle()}"></span>
-            </div>
-            <div class="text">
-                <span>담당자 : </span><span th:text="${cardList.getResponsiblePerson()}"></span>
-            </div>
-            <button th:onclick="|location.href='@{'/cards/'+${cardList.getCardId()}}'|"
-                    type="button">상세</button>
-            <button th:onclick="deleteCard([[${cardList.getCardId()}]])"
-                    type="button">삭제</button>
-            <button th:onclick="openUpdateCardPopup(
-                [[${cardList.getCardId()}]],
-                [[${cardList.getTitle()}]],
-                [[${cardList.getResponsiblePerson()}]],
-                [[${cardList.getContent()}]],
-                [[${cardList.getDeadline}]])"
-                    type="button">수정</button>
-        </div>
+
     </div>
 
     <div th:id="'user-'+${boardId}" class="user-container">

@@ -1,5 +1,6 @@
 ### Variables
 @boardId = 1
+@columnId =1
 
 
 ### 컬럼 생성
@@ -9,4 +10,14 @@ Authorization: {{Authorization}}
 
 {
   "name":"컬럼 이름1"
+}
+
+
+
+### 컬럼 수정
+PUT http://localhost:8080/boards/{{boardId}}/columns/{{columnId}}
+Content-Type: application/json
+
+{
+  "name":"컬럼 이름33444"
 }
