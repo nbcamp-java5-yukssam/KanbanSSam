@@ -5,12 +5,12 @@ import com.sparta.kanbanssam.card.dto.CardRequestDto;
 import com.sparta.kanbanssam.card.dto.CardResponseDto;
 import com.sparta.kanbanssam.card.service.CardService;
 import com.sparta.kanbanssam.security.UserDetailsImpl;
-import com.sparta.kanbanssam.user.entity.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class CardController {
     @PostMapping("/columns/{columnId}/cards")
     public ResponseEntity<?> createCard(
             @PathVariable Long columnId,
-            @Valid @RequestBody CardRequestDto requestDto,
+            @RequestBody @Valid CardRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         CardResponseDto responseDto = cardService.createCard(columnId, requestDto, userDetails.getUser());
         return ResponseEntity.ok(responseDto);
@@ -40,15 +40,13 @@ public class CardController {
 
     /**
      * 카드 수정
-     * @param columnId 컬럼 ID
      * @param cardId 카드 ID
      * @param requestDto 카드 수정 정보
      * @return 카드 정보
      */
     @ResponseBody
-    @PutMapping("/columns/{columnId}/cards/{cardId}")
+    @PutMapping("/cards/{cardId}")
     public ResponseEntity<?> updateCard(
-            @PathVariable Long columnId,
             @PathVariable Long cardId,
             @Valid @RequestBody CardRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -58,16 +56,28 @@ public class CardController {
 
     /**
      * 카드 삭제
-     * @param columnId 컬럼 ID
      * @param cardId 카드 ID
      */
     @ResponseBody
-    @DeleteMapping("/columns/{columnId}/cards/{cardId}")
+    @DeleteMapping("/cards/{cardId}")
     public void deleteCard(
-            @PathVariable Long columnId,
             @PathVariable Long cardId,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         cardService.deleteCard(cardId, userDetails.getUser());
+    }
+
+    /**
+     * 카드 순서 및 컬럼 이동
+     * <p>
+     *     순서만 이동하거나 컬럼까지 이동할 수 있음
+     * </p>
+     * @param columnId 컬럼 ID
+     * @param cardIdList 카드 ID 목록
+     */
+    @ResponseBody
+    @PutMapping("/columns/{columnId}/cards/orders")
+    public void updateCardOrders(@PathVariable Long columnId, @RequestBody List<Long> cardIdList) {
+        cardService.updateCardOrders(columnId, cardIdList);
     }
 
     /**
@@ -76,7 +86,7 @@ public class CardController {
      * @return 카드 정보
      */
     @ResponseBody
-    @GetMapping("/cards/{cardId}")
+    @GetMapping("/api/cards/{cardId}")
     public ResponseEntity<?> getCard(
             @PathVariable Long cardId) {
         CardResponseDto responseDto = cardService.getCard(cardId);
@@ -89,9 +99,10 @@ public class CardController {
      * @return 카드 목록
      */
     @ResponseBody
-    @GetMapping("/board/{boardId}/cards")
+    @GetMapping("/boards/{boardId}/cards")
     public ResponseEntity<?> getCardListByBoard(
             @PathVariable Long boardId) {
+
         List<CardResponseDto> responseDtos = cardService.getCardListByBoard(boardId);
         return ResponseEntity.ok(responseDtos);
     }
@@ -115,7 +126,7 @@ public class CardController {
      * @return 컬럼 별 카드 목록
      */
     @ResponseBody
-    @GetMapping("/board/{boardId}/cards/byColumns")
+    @GetMapping("/boards/{boardId}/cards/byColumns")
     public ResponseEntity<?> getCardListByColumn(
             @PathVariable Long boardId) {
         List<CardListByColumnsResponseDto> responseDto = cardService.getCardListByColumn(boardId);
@@ -129,15 +140,33 @@ public class CardController {
 //    }
 
     /**
-     * --------------------------------------------------------------
+     * view
      */
 
     /**
-     * test용 view
+     * 보드 전체 컬럼 별 카드 목록 View
      * @return card.html
      */
-    @GetMapping("/columns/cards/view")
-    public String cardView() {
-        return "/card/card";
+    @GetMapping("/boards/{boardId}/columns/cardList")
+    public String cardListView(@PathVariable Long boardId, Model model) {
+        List<CardListByColumnsResponseDto> cardListByColumn = cardService.getCardListByColumn(boardId);
+        model.addAttribute("cardListByColumn", cardListByColumn);
+        model.addAttribute("boardId", boardId);
+
+        List<CardResponseDto> cardListByBoard = cardService.getCardListByBoard(boardId);
+        model.addAttribute("cardListByBoard", cardListByBoard);
+        return "/card/cardList";
+    }
+
+    /**
+     * 카드 상세 View
+     * @param cardId 카드 ID
+     * @return cardDetail.html
+     */
+    @GetMapping("/cards/{cardId}")
+    public String cardDetail(@PathVariable Long cardId, Model model) {
+        CardResponseDto responseDto = cardService.getCard(cardId);
+        model.addAttribute("card", responseDto);
+        return "/card/cardDetail";
     }
 }
