@@ -34,6 +34,7 @@ public class CardController {
             @PathVariable Long columnId,
             @RequestBody @Valid CardRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
         CardResponseDto responseDto = cardService.createCard(columnId, requestDto, userDetails.getUser());
         return ResponseEntity.ok(responseDto);
     }

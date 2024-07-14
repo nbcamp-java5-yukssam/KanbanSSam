@@ -17,6 +17,7 @@ Authorization: {{Authorization}}
 ### 보드 수정
 PUT http://localhost:8080/boards/{{boardId}}
 Content-Type: application/json
+Authorization: {{Authorization}}
 
 {
   "name":"보드 제목 수정",

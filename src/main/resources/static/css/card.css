@@ -113,6 +113,10 @@ div.text {
     width: 330px;
 }
 
+.add-column-btn {
+    width: 330px;
+}
+
 .popup button.close {
     position: absolute;
     top: 15px;
