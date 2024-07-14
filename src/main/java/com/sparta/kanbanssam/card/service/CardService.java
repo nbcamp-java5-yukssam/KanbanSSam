@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,15 +35,15 @@ public class CardService {
      */
     @Transactional
     public CardResponseDto createCard(Long columnId, CardRequestDto requestDto, User user) {
-        // todo : ColumnService에 Column 엔티티 조회 메서드 생성 시 수정
         Columns columns = columnRepository.findById(columnId).orElseThrow(
                 ()-> new CustomException(ErrorType.COLUMN_NOT_FOUND));
+
+        // todo : 해당 보드에 초대된 사용자인지 확인 필요
 
         Long cardCnt = cardRepository.countAllByColumnsId(columnId);
 
         Card card = Card.builder()
                 .user(user)
-                .board(columns.getBoard())
                 .columns(columns)
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
@@ -69,8 +68,7 @@ public class CardService {
     public CardResponseDto updateCard(Long cardId, CardRequestDto requestDto, User user) {
         Card card = findCard(cardId);
 
-        // 카드 작성자가 아닐 경우 예외처리
-        // todo : User 구현 완료 시 UserRole 권한 체크 로직도 추가
+        // 카드 작성자 또는 매니저가 아닐 경우 예외처리
         card.validateAuthority(user);
         card.update(requestDto);
 
@@ -86,6 +84,26 @@ public class CardService {
         Card card = findCard(cardId);
         card.validateAuthority(user);
         cardRepository.delete(card);
+    }
+
+    /**
+     * 카드 순서 및 컬럼 이동
+     * <p>
+     *     순서만 이동하거나 컬럼까지 이동할 수 있음
+     * </p>
+     * @param columnId 컬럼 ID
+     * @param cardIdList 이동한 컬럼의 카드 ID 순번 목록
+     */
+    @Transactional
+    public void updateCardOrders(Long columnId, List<Long> cardIdList) {
+        Columns columns = columnRepository.findById(columnId)
+                .orElseThrow(()-> new CustomException(ErrorType.COLUMN_NOT_FOUND));
+
+        for (int i = 1; i <= cardIdList.size(); i++) {
+            Card card = findCard(cardIdList.get(i - 1));
+            card.updateOrders((long) i, columns);
+            cardRepository.save(card);
+        }
     }
 
     /**
@@ -106,9 +124,7 @@ public class CardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(()-> new CustomException(ErrorType.BOARD_NOT_FOUND));
 
-        return board.getCardList().stream()
-                .map(CardResponseDto::new)
-                .toList();
+        return cardRepository.getCardListByBoard(boardId);
     }
 
     /**
@@ -117,13 +133,10 @@ public class CardService {
      * @return 카드 목록
      */
     public List<CardResponseDto> getCardList(Long columnId) {
-        // todo : ColumnService에 Column 엔티티 조회 메서드 생성 시 수정
         Columns columns = columnRepository.findById(columnId).orElseThrow(
                 ()-> new CustomException(ErrorType.COLUMN_NOT_FOUND));
 
-        List<CardResponseDto> cardList = cardRepository.findAllByColumnsOrderByOrders(columns)
-                .stream().map(CardResponseDto::new).toList();
-        return cardList;
+        return cardRepository.getCardListAtColumn(columnId);
     }
 
     /**
@@ -135,25 +148,7 @@ public class CardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(()-> new CustomException(ErrorType.BOARD_NOT_FOUND));
 
-        List<Columns> columnsList = board.getColumnsList();
-
-        List<CardListByColumnsResponseDto> response = new ArrayList<>();
-
-        for (Columns columns : columnsList) {
-            CardListByColumnsResponseDto responseDto = CardListByColumnsResponseDto.builder()
-                    .columnId(columns.getId())
-                    .columnName(columns.getName())
-                    .columnOrder(columns.getOrders())
-                    .cardList(
-                            columns.getCardList().stream()
-                                    .map(CardResponseDto::new)
-                                    .toList()
-                    )
-                    .build();
-            response.add(responseDto);
-        }
-
-        return response;
+        return cardRepository.getCardListByColumnAtBoard(board);
     }
 
     /**

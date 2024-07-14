@@ -2,6 +2,8 @@ package com.sparta.kanbanssam.column.entity;
 
 import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.card.entity.Card;
+import com.sparta.kanbanssam.column.dto.ColumnRequestDto;
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,5 +41,13 @@ public class Columns {
         this.board = board;
         this.name=name;
         this.orders = orders;
+    }
+
+    /**
+     * 컬럼 수정
+     * @param requestDto 컬럼 수정 정보
+     */
+    public void update(ColumnRequestDto requestDto) {
+        this.name = requestDto.getName();
     }
 }
