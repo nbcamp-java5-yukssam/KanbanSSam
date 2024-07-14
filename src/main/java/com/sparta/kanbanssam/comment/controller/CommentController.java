@@ -24,14 +24,16 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/cards/{cardId}/comments")
-    public ResponseEntity<?> addComment(
-            @PathVariable("cardId") Long cardId,
-            @RequestBody CommentRequestDto requestDto,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        CommentCreatedResponseDto responseDto = commentService.createComment(cardId, requestDto, userDetails.getUser());
+    public ResponseEntity<?> addComment(@PathVariable("cardId") Long cardId, @RequestBody CommentRequestDto requestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
+        CommentCreatedResponseDto responseDto = commentService.createComment(cardId, requestDto, user);
         return ResponseEntity.ok(responseDto);
     }
 
-    @GetMapping("/comments/view")
-    public String cardView() {return "/comment/comment";}
+    @GetMapping("/cards/{cardId}/comments")
+    public ResponseEntity<?> getComment(@PathVariable("cardId") Long cardId) {
+        return commentService.getComment(cardId);
+    }
+
 }
