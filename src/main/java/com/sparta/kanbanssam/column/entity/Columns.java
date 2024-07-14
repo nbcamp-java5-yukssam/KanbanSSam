@@ -32,7 +32,7 @@ public class Columns {
     @Column(nullable = false)
     private Long orders;
 
-    @OneToMany(mappedBy = "columns", orphanRemoval = true)
+    @OneToMany(mappedBy = "columns",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Card> cardList;
 
     @Builder

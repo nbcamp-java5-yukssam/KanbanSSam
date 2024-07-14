@@ -54,7 +54,7 @@ public class ColumnController {
      */
     @ResponseBody
     @PutMapping("/{boardId}/columns/{columnId}")
-    public ResponseEntity<?> updateCard(
+    public ResponseEntity<?> updateColumn(
             @PathVariable Long boardId,
             @PathVariable Long columnId,
             @Valid @RequestBody ColumnRequestDto requestDto,
@@ -66,6 +66,21 @@ public class ColumnController {
         // 권한 확인 후 컬럼 생성
         ColumnResponseDto responseDto = columnService.updateColumn(columnId, requestDto, user);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @ResponseBody
+    @DeleteMapping("/{boardId}/columns/{columnId}")
+    public void deleteColumn(
+            @PathVariable Long boardId,
+            @PathVariable Long columnId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        // 로그인된 사용자 정보 가져오기
+        User user = userDetails.getUser();
+
+        // 권한 확인 후 컬럼 생성
+        columnService.deleteColumn(columnId, user);
+
     }
 
     @GetMapping("/columns/view")
