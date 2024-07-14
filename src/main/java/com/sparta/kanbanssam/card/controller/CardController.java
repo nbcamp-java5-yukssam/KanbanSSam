@@ -153,8 +153,8 @@ public class CardController {
         model.addAttribute("cardListByColumn", cardListByColumn);
         model.addAttribute("boardId", boardId);
 
-        List<CardResponseDto> cardListByBoard = cardService.getCardListByBoard(boardId);
-        model.addAttribute("cardListByBoard", cardListByBoard);
+//        List<CardResponseDto> cardListByBoard = cardService.getCardListByBoard(boardId);
+//        model.addAttribute("cardListByBoard", cardListByBoard);
         return "/card/cardList";
     }
 
