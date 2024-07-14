@@ -38,13 +38,15 @@ function addCard() {
         'deadline': deadline
     };
 
-
+    const accessToken = getAccessToken();
 
     $.ajax({
         type: 'POST',
         url: `/columns/${columnId}/cards`,
         contentType: 'application/json',
-        // Authorization: '',
+        beforeSend : function(xhr){
+            xhr.setRequestHeader("Authorization", accessToken);
+        },
         data: JSON.stringify(data),
         success: function (response) {
             $('#card-add-container').removeClass('active');
@@ -58,8 +60,22 @@ function addCard() {
 
 // 카드 삭제 alert
 function deleteCard(cardId) {
+    const accessToken = getAccessToken();
     if (confirm("삭제하는 경우 작성한 모든 데이터가 삭제됩니다.\n정말 삭제하시겠습니까?") === true) {
-        alert("delete")
+        $.ajax({
+            type: 'DELETE',
+            url: `/cards/${cardId}`,
+            beforeSend : function(xhr){
+                xhr.setRequestHeader("Authorization", accessToken);
+            },
+            success: function (response) {
+                $('#card-add-container').removeClass('active');
+                alert('카드 삭제 성공.');
+                window.location.reload();
+            },error: err => {
+                alert(err.responseJSON.message);
+            }
+        })
     }
 }
 
@@ -97,13 +113,15 @@ function updateCard() {
         'deadline': deadline
     };
 
-    console.log(data)
+    const accessToken = getAccessToken();
 
     $.ajax({
-        type: 'POST',
+        type: 'PUT',
         url: `/cards/${cardId}`,
         contentType: 'application/json',
-        // Authorization: '',
+        beforeSend : function(xhr){
+            xhr.setRequestHeader("Authorization", accessToken);
+        },
         data: JSON.stringify(data),
         success: function (response) {
             $('#card-add-container').removeClass('active');
@@ -284,15 +302,15 @@ function updateCardOrders(columnId, cardIdList) {
 function updateColumnOrders(columnId, cardIdList) {
     const data = {cardIdList};
 
-    $.ajax({
-        type: 'PUT',
-        url: `/columns/${columnId}/cards/orders`,
-        contentType: 'application/json',
-        data: JSON.stringify(cardIdList),
-        success: function (response) {
-            console.log("success")
-        },error: err => {
-            alert(err.responseJSON.message);
-        }
-    })
+    // $.ajax({
+    //     type: 'PUT',
+    //     url: `/columns/${columnId}/cards/orders`,
+    //     contentType: 'application/json',
+    //     data: JSON.stringify(cardIdList),
+    //     success: function (response) {
+    //         console.log("success")
+    //     },error: err => {
+    //         alert(err.responseJSON.message);
+    //     }
+    // })
 }

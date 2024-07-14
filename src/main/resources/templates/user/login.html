@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+
+    <!-- cookie -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+
     <script>
         function login() {
             const accountId = document.getElementById('accountId').value;
@@ -19,6 +23,16 @@
                 .then(response => {
                     if (response.ok) {
                         alert('Login successful!');
+
+                        const accessToken = response.headers.get("Authorization");
+                        const refreshToken = response.headers.get("RefreshToken");
+
+                        // setCookie("Authorization", accessToken);
+                        // setCookie("RefreshToken", refreshToken);
+
+                        Cookies.set('Authorization', accessToken, {path: '/'})
+                        Cookies.set('RefreshToken', refreshToken, {path: '/'})
+
                         // 로그인 후 이동할 페이지로 리디렉션
                         window.location.href = '/home';
                     } else {
@@ -31,6 +45,18 @@
         function redirectToSignup() {
             window.location.href = '/users/view/signup';
         }
+
+        const setCookie = (key, value) => {
+            // 자동 삭제 날짜를 지정하는 코드
+            let today = new Date();
+            today.setDate(today.getDate());
+            // 쿠키에 값을 저장
+            document.cookie =
+                key +
+                '=' +
+                value +
+                '; path=/;';
+        };
     </script>
 </head>
 <body>
