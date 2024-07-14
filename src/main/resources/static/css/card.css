@@ -1,3 +1,67 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #3d4e56fa;
+    display: flex;
+}
+
+button {
+    width: 40px;
+    height: 25px;
+    border-radius: 2px;
+    background-color: #15aabf;
+    border: none;
+}
+
+div.column {
+    margin: 10px;
+    padding: 10px;
+    width: 300px;
+    background-color: #b5c1dc57;
+    border-radius: 8px;
+
+    float: left;
+    cursor: move;
+    border: none;
+}
+
+div.card {
+    width: 150px;
+    height: 100px;
+    border: none;
+    border-radius: 8px;
+    margin: 20px;
+    cursor: move;
+    font-size: 30px;
+    background: #eaeaea4f;
+}
+
+div.text {
+    font-size: 15px;
+}
+
+.card-container {
+    /*margin: 10px;*/
+    /*padding: 10px;*/
+    /*width: 300px;*/
+    /*background-color: #b5c1dc57;*/
+    /*border-radius: 8px;*/
+}
+
+.card-detail {
+    margin: 10px;
+    padding: 10px;
+    width: 300px;
+    background-color: #b5c1dc57;
+    border-radius: 8px;
+
+    border: none;
+}
+
+.draggable.dragging {
+    opacity: 0.5;
+}
+
 .popup-container {
     display: none;
     position: fixed;
@@ -73,4 +137,20 @@
     border-radius: 2px;
     background-color: #15aabf;
     border: none;
+}
+
+.nav {
+    width: 530px;
+    margin: 30px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.nav div {
+    cursor: pointer;
+}
+
+.nav div.active {
+    font-weight: 700;
 }
