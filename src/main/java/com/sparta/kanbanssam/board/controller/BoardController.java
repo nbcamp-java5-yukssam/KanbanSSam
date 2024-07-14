@@ -29,16 +29,13 @@ public class BoardController {
     public ResponseEntity<?> createBoard(@RequestBody @Valid  BoardRequestDto requestDto,
                                       @AuthenticationPrincipal UserDetailsImpl userDetails
                                     ) {
-    public ResponseEntity<?> createBoard(
-            @RequestBody BoardRequestDto requestDto,
-            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         BoardResponseDto responseDto = boardservice.createBoard(requestDto, userDetails.getUser());
 
         return ResponseEntity.ok(responseDto);
         }
 
-        //상품수정
-    @Transactional
+    //상품수정
+    @ResponseBody
     @PutMapping("/{boardId}")
     public ResponseEntity<?> updateBoard(@RequestBody BoardUpdateRequestDto requestDto,
                                           @PathVariable Long boardId,
@@ -48,6 +45,4 @@ public class BoardController {
 
         return ResponseEntity.ok(reponseDto);
     }
-
-
 }

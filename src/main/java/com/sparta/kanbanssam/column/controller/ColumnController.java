@@ -18,10 +18,6 @@ public class ColumnController {
 
     @ResponseBody
     @PostMapping("/{boardId}/columns")
-    public ResponseEntity<?> createColumn(@PathVariable Long boardId, @RequestBody ColumnRequestDto requestDto){
-        // todo : secutity 구현 완료 시 userDetails 로 수정
-       // User user = User.builder().build();
-        ColumnResponseDto responseDto = columnService.createColum(boardId, requestDto, user);
     public ResponseEntity<?> createColumn(
             @PathVariable Long boardId,
             @RequestBody ColumnRequestDto requestDto,

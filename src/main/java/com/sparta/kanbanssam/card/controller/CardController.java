@@ -32,10 +32,6 @@ public class CardController {
     @PostMapping("/columns/{columnId}/cards")
     public ResponseEntity<?> createCard(
             @PathVariable Long columnId,
-            @Valid @RequestBody CardRequestDto requestDto) {
-        // todo : secutity 구현 완료 시 userDetails 로 수정
-       // User user = User.builder().build();
-        CardResponseDto responseDto = cardService.createCard(columnId, requestDto, user);
             @Valid @RequestBody CardRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         CardResponseDto responseDto = cardService.createCard(columnId, requestDto, userDetails.getUser());
@@ -54,10 +50,6 @@ public class CardController {
     public ResponseEntity<?> updateCard(
             @PathVariable Long columnId,
             @PathVariable Long cardId,
-            @Valid @RequestBody CardRequestDto requestDto) {
-        // todo : secutity 구현 완료 시 userDetails 로 수정
-       // User user = User.builder().build();
-        CardResponseDto responseDto = cardService.updateCard(cardId, requestDto, user);
             @Valid @RequestBody CardRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         CardResponseDto responseDto = cardService.updateCard(cardId, requestDto, userDetails.getUser());
@@ -87,9 +79,6 @@ public class CardController {
     @GetMapping("/cards/{cardId}")
     public ResponseEntity<?> getCard(
             @PathVariable Long cardId) {
-        // todo : secutity 구현 완료 시 userDetails 로 수정
-       // User user = User.builder().build();
-        cardService.deleteCard(cardId, user);
         CardResponseDto responseDto = cardService.getCard(cardId);
         return ResponseEntity.ok(responseDto);
     }

@@ -4,6 +4,9 @@ package com.sparta.kanbanssam.board.entity;
 import com.sparta.kanbanssam.board.dto.BoardUpdateRequestDto;
 import com.sparta.kanbanssam.card.entity.Card;
 import com.sparta.kanbanssam.column.entity.Columns;
+import com.sparta.kanbanssam.common.enums.ErrorType;
+import com.sparta.kanbanssam.common.enums.UserRole;
+import com.sparta.kanbanssam.common.exception.CustomException;
 import com.sparta.kanbanssam.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -46,9 +49,16 @@ public class Board {
         this.name = name;
         this.introduction = introduction;
     }
+
     public void updateBoard(BoardUpdateRequestDto requestDto) {
         this.name = requestDto.getName();
         this.introduction = requestDto.getIntroduction();
+    }
+
+    public void validateAuthority(User user) {
+        if (!this.manager.getId().equals(user.getId())) {
+            throw new CustomException(ErrorType.BOARD_ACCESS_FORBIDDEN);
+        }
     }
 
 }
