@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="/css/card.css">
     <script src="/js/card.js"></script>
+    <script src="/js/column.js"></script>
 </head>
 <body>
 <div class="board-container">
@@ -26,11 +27,18 @@
         </div>
     </div>
     <div th:id="${boardId}" class="column-container">
+
         <div th:each="cardListByColumn : ${cardListByColumn}"
              th:id="'column-'+${cardListByColumn.columnId}"
              class="column" draggable="true">
 
             <h1 th:text="${cardListByColumn.getColumnName()}"></h1>
+
+            <button th:onclick="openUpdateColumnPopup(
+            [[${cardListByColumn.columnId}]],
+            [[${cardListByColumn.getColumnName()}]])">Update Column</button>
+
+            <button th:onclick="deleteColumn([[${cardListByColumn.columnId}]])">Delete Column</button>
 
             <div th:id="${cardListByColumn.columnId}"
                  class="card-container">
@@ -58,6 +66,11 @@
             </div>
             <button th:onclick="openAddCardPopup([[${cardListByColumn.getColumnId()}]])">Add Card</button>
         </div>
+
+        <div style="float: right">
+            <button th:onclick="openAddColumnPopup()">Add Column</button>
+        </div>
+
     </div>
 
     <div th:id="'all-'+${boardId}" class="all-container">
@@ -69,7 +82,7 @@
     </div>
 </div>
 
-<!-- 폴더 추가 팝업 -->
+<!-- 카드 추가 팝업 -->
 <div id="card-add-container" class="popup-container">
     <div class="popup" style="width:410px; height:auto">
         <input type="hidden" id="columnId" value="">
@@ -91,7 +104,7 @@
     </div>
 </div>
 
-<!-- 폴더 수정 팝업 -->
+<!-- 카드 수정 팝업 -->
 <div id="card-update-container" class="popup-container">
     <div class="popup" style="width:410px; height:auto">
         <input type="hidden" id="update-cardId" value="">
@@ -113,7 +126,35 @@
     </div>
 </div>
 
-<!-- drag & drop -->
+<!-- 컬럼 추가 팝업 -->
+<div id="column-add-container" class="popup-container">
+    <div class="popup" style="width:410px; height:auto">
+        <button id="column-close" class="close" onclick="closeAddColumnPopup()">
+            X
+        </button>
+        <h1>🗂 컬럼 추가하기</h1>
+        <div id="column-add-input">
+            <input type="text" id="name" name="name" placeholder="컬럼 이름">
+        </div>
+        <button id="add-column-btn" class="cta2" onclick="addColumn()">추가하기</button>
+    </div>
+</div>
+
+<!-- 컬럼 수정 팝업 -->
+<div id="column-update-container" class="popup-container">
+    <div class="popup" style="width:410px; height:auto">
+        <button id="column-update-close" class="close" onclick="closeUpdateColumnPopup()">
+            X
+        </button>
+        <h1>🗂 컬럼 수정하기</h1>
+        <div id="column-update-input">
+            <input type="hidden" id="update-column-id" value="">
+            <input type="text" id="update-name" name="name" placeholder="컬럼 이름">
+        </div>
+        <button id="update-column-btn" class="cta2" onclick="updateColumn()">수정하기</button>
+    </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"
         integrity="sha512-zYXldzJsDrNKV+odAwFYiDXV2Cy37cwizT+NkuiPGsa9X1dOz04eHvUWVuxaJ299GvcJT31ug2zO4itXBjFx4w=="
         crossorigin="anonymous"

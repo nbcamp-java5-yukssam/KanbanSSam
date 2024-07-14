@@ -38,6 +38,8 @@ function addCard() {
         'deadline': deadline
     };
 
+    console.log(data)
+
     const accessToken = getAccessToken();
 
     $.ajax({
@@ -49,7 +51,6 @@ function addCard() {
         },
         data: JSON.stringify(data),
         success: function (response) {
-            $('#card-add-container').removeClass('active');
             alert('카드 추가 성공.');
             window.location.reload();
         },error: err => {
@@ -69,7 +70,6 @@ function deleteCard(cardId) {
                 xhr.setRequestHeader("Authorization", accessToken);
             },
             success: function (response) {
-                $('#card-add-container').removeClass('active');
                 alert('카드 삭제 성공.');
                 window.location.reload();
             },error: err => {
@@ -87,6 +87,11 @@ function openUpdateCardPopup(cardId, title, responsiblePerson, content, deadline
     $('#update-responsiblePerson').val(responsiblePerson);
     $('#update-content').val(content);
     $('#update-deadline').val(deadline);
+    console.log(cardId)
+    console.log(title)
+    console.log(responsiblePerson)
+    console.log(content)
+    console.log(deadline)
 }
 
 // 카드 수정 팝업 닫기
@@ -124,7 +129,6 @@ function updateCard() {
         },
         data: JSON.stringify(data),
         success: function (response) {
-            $('#card-add-container').removeClass('active');
             alert('카드 수정 성공.');
             window.location.reload();
         },error: err => {
@@ -162,10 +166,10 @@ function addAllCardItem(card) {
             </div>
             <button onclick="location.href='/cards/${card.cardId}'"
                     type="button">상세</button>
-            <button onclick="deleteCard('${card.id}')"
+            <button onclick="deleteCard('${card.cardId}')"
                     type="button">삭제</button>
             <button onclick="openUpdateCardPopup(
-                '${card.id}',
+                '${card.cardId}',
                 '${card.title}',
                 '${card.responsiblePerson}',
                 '${card.content}',
@@ -244,7 +248,7 @@ $(document).ready(function () {
     const cardContainer = document.querySelectorAll(".card-container");
     cardContainer.forEach((cardContainer) => {
         new Sortable(cardContainer, {
-            group: "shared",
+            group: "card",
             animation: 150,
             ghostClass: "blue-background-class"
         });
@@ -265,36 +269,6 @@ $(document).ready(function () {
             updateCardOrders(columnId, cardIdList);
         });
     });
-
-    const columns = document.querySelectorAll(".column");
-
-    const columnContainer = document.querySelectorAll(".column-container");
-    columnContainer.forEach((columnContainer) => {
-        new Sortable(columnContainer, {
-            group: "shared",
-            animation: 150,
-            ghostClass: "blue-background-class"
-        });
-    });
-
-    columns.forEach(columns => {
-        columns.addEventListener("dragstart", () => {
-            columns.classList.add("dragging");
-        });
-
-        columns.addEventListener("dragend", () => {
-            columns.classList.remove("dragging");
-            const boardId = columns.parentNode.id;
-
-            const columnDivList = Array.from(columns.parentNode.querySelectorAll(".column"));
-            const columnIdList = columnDivList.map(e => e.id.slice(7));
-
-            console.log(boardId);
-            console.log(columnIdList)
-
-            // updateColumnOrders(boardId, columnIdList);
-        });
-    });
 })
 
 // 카드 순서 이동 API 요청
@@ -312,21 +286,4 @@ function updateCardOrders(columnId, cardIdList) {
             alert(err.responseJSON.message);
         }
     })
-}
-
-// 컬럼 순서 이동 API 요청
-function updateColumnOrders(columnId, cardIdList) {
-    const data = {cardIdList};
-
-    // $.ajax({
-    //     type: 'PUT',
-    //     url: `/columns/${columnId}/cards/orders`,
-    //     contentType: 'application/json',
-    //     data: JSON.stringify(cardIdList),
-    //     success: function (response) {
-    //         console.log("success")
-    //     },error: err => {
-    //         alert(err.responseJSON.message);
-    //     }
-    // })
 }

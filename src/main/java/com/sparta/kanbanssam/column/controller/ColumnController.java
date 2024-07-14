@@ -1,7 +1,5 @@
 package com.sparta.kanbanssam.column.controller;
 
-import com.sparta.kanbanssam.board.entity.Board;
-
 import com.sparta.kanbanssam.column.dto.ColumnRequestDto;
 import com.sparta.kanbanssam.column.dto.ColumnResponseDto;
 import com.sparta.kanbanssam.column.service.ColumnService;
@@ -10,16 +8,14 @@ import com.sparta.kanbanssam.security.UserDetailsImpl;
 import com.sparta.kanbanssam.user.entity.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/boards")
+@RequestMapping
 @RequiredArgsConstructor
-@Slf4j
 public class ColumnController {
     private final ColumnService columnService;
     private final AuthorizationService authorizationService;
@@ -31,7 +27,7 @@ public class ColumnController {
      * @return 컬럼 정보
      */
     @ResponseBody
-    @PostMapping("/{boardId}/columns")
+    @PostMapping("/boards/{boardId}/columns")
     public ResponseEntity<?> createColumn(
             @PathVariable Long boardId,
             @RequestBody ColumnRequestDto requestDto,
@@ -47,15 +43,13 @@ public class ColumnController {
 
     /**
      * 컬럼 수정
-     * @param boardId 보드 ID
      * @param columnId 컬럼 ID
      * @param requestDto 컬럼 수정 정보
      * @return 카드 정보
      */
     @ResponseBody
-    @PutMapping("/{boardId}/columns/{columnId}")
+    @PutMapping("/columns/{columnId}")
     public ResponseEntity<?> updateColumn(
-            @PathVariable Long boardId,
             @PathVariable Long columnId,
             @Valid @RequestBody ColumnRequestDto requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -69,9 +63,8 @@ public class ColumnController {
     }
 
     @ResponseBody
-    @DeleteMapping("/{boardId}/columns/{columnId}")
+    @DeleteMapping("/columns/{columnId}")
     public void deleteColumn(
-            @PathVariable Long boardId,
             @PathVariable Long columnId,
             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
