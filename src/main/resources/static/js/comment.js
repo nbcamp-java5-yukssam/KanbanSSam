@@ -9,12 +9,37 @@ function getCardIdFromURL() {
   }
 }
 
+// 토큰 유무 확인
+function isNotEmpty(val) {
+  if (val !== 'undefined') {
+    return true;
+  }
+  return false;
+}
+// 토큰 유무 확인
+function isEmpty(val) {
+  return !isNotEmpty(val);
+}
+
+// 쿠키에서 값을 읽는 함수
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 // 카드 추가 API 요청
 function addComment() {
   const cardId = getCardIdFromURL();
   const comment = $('#comment').val();
-  const token = localStorage.getItem('Authorization');
-  console.log(token)
+  const token = decodeURIComponent(getCookie('Authorization'));
+  if(isEmpty(token)){
+    alert('로그인 후 이용해주세요');
+    window.location.href = 'http://localhost:8080/users/view/login-page';
+    return;
+  }
+
+
 
   const data = {
     'comment': comment

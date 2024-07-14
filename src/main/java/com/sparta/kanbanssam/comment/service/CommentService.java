@@ -24,16 +24,12 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final CardRepository cardRepository;
 
+    // 댓글 생성
     @Transactional
-    public CommentCreatedResponseDto createComment(Long cardId, CommentRequestDto requestDto, User user) {
+    public CommentCreatedResponseDto createComment(Long cardId, CommentRequestDto requestDto,
+        User user) {
         Card card = cardRepository.findById(cardId).orElseThrow(
-            ()-> new CustomException(ErrorType.CARD_NOT_FOUND));
-
-//        Comment comment = Comment.builder()
-//            .comment(requestDto.getComment())
-//            .user(user)
-//            .card(card)
-//            .build();
+            () -> new CustomException(ErrorType.CARD_NOT_FOUND));
 
         Comment comment = Comment.builder()
             .comment(requestDto.getComment())
@@ -45,9 +41,13 @@ public class CommentService {
         return new CommentCreatedResponseDto(comment);
     }
 
-
+    // 댓글 조회
     public ResponseEntity<?> getComment(Long cardId) {
         List<Comment> commentList = commentRepository.findCommentByCardId(cardId);
+
+        if (commentList.isEmpty()) {
+            throw new CustomException(ErrorType.CARD_NOT_FOUND);
+        }
 
         List<CommentGetResponseDto> responseList = commentList.stream()
             .map(CommentGetResponseDto::new)
