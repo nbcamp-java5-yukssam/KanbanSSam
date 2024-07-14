@@ -20,6 +20,7 @@ public class CommentRepositoryQueryImpl implements CommentRepositoryQuery {
         return queryFactory
             .selectFrom(comment)
             .where(comment.card.id.eq(cardId))
+            .orderBy(comment.createdAt.desc())
             .fetch();
     }
 }

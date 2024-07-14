@@ -1,5 +1,5 @@
 function getCardIdFromURL() {
-  const regex = /\/cards\/(\d+)\/comments\/view/;
+  const regex = /\/cards\/(\d+)/;
   const match = window.location.pathname.match(regex);
 
   if (match && match[1]) {
@@ -32,14 +32,13 @@ function getCookie(name) {
 function addComment() {
   const cardId = getCardIdFromURL();
   const comment = $('#comment').val();
+  console.log(comment);
   const token = decodeURIComponent(getCookie('Authorization'));
   if(isEmpty(token)){
     alert('로그인 후 이용해주세요');
     window.location.href = 'http://localhost:8080/users/view/login-page';
     return;
   }
-
-
 
   const data = {
     'comment': comment
