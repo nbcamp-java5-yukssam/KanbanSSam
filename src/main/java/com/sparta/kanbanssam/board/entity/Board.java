@@ -34,9 +34,6 @@ public class Board {
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<Columns> columnsList;
 
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
-    private List<Card> cardList;
-
     @Builder
     public Board(Long id, User manager, String name, String introduction) {
         this.id = id;
