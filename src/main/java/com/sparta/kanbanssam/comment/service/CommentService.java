@@ -45,9 +45,9 @@ public class CommentService {
     public ResponseEntity<?> getComment(Long cardId) {
         List<Comment> commentList = commentRepository.findCommentByCardId(cardId);
 
-        if (commentList.isEmpty()) {
-            throw new CustomException(ErrorType.CARD_NOT_FOUND);
-        }
+//        if (commentList.isEmpty()) {
+//            throw new CustomException(ErrorType.CARD_NOT_FOUND);
+//        }
 
         List<CommentGetResponseDto> responseList = commentList.stream()
             .map(CommentGetResponseDto::new)
