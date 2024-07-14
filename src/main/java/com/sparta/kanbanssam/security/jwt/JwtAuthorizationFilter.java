@@ -6,9 +6,7 @@ import com.sparta.kanbanssam.common.exception.CustomException;
 import com.sparta.kanbanssam.security.UserDetailsImpl;
 import com.sparta.kanbanssam.security.UserDetailsServiceImpl;
 import com.sparta.kanbanssam.user.entity.User;
-import com.sparta.kanbanssam.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,7 +54,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         try {
             setAuthentication(info.getSubject());
         } catch (Exception e){
-            log.error("username = {}, message = {}", info.getSubject(), "인증 정보를 찾을 수 없습니다.");
+            log.error(e.getMessage());
             throw new CustomException(ErrorType.NOT_FOUND_AUTHENTICATION_INFO);
         }
     }
@@ -65,17 +63,22 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     public void validateAndAuthenticateWithRefreshToken(HttpServletRequest request, HttpServletResponse response){
         String refreshToken = jwtUtil.getRefreshTokenFromHeader(request);
 
+        // 리프레시 토큰이 null이 아니고, 유효한 토큰인지 확인
         if(StringUtils.hasText(refreshToken) && jwtUtil.validateToken(refreshToken)){
+            // 유저 객체 가져오기
             Claims info = jwtUtil.getUserInfoFromToken(refreshToken);
             UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(info.getSubject());
             User user = userDetails.getUser();
 
+            // 유저의 리프레시 토큰 검증
             if(user.validateRefreshToken(refreshToken)){
+                // accessToken 생성
                 UserRole role = user.getUserRole();
                 String newAccessToken = jwtUtil.createAccessToken(info.getSubject(), role);
                 jwtUtil.setHeaderAccessToken(response, newAccessToken);
 
                 try{
+                    //Athentication 설정
                     setAuthentication(info.getSubject());
                 } catch (Exception e) {
                     log.error(e.getMessage());
