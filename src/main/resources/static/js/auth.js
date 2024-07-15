@@ -34,6 +34,14 @@ function getAccessToken() {
     return access;
 }
 
+function getRefreshToken() {
+    let refresh = Cookies.get('RefreshToken');
+    if (refresh === undefined) {
+        return '';
+    }
+    return refresh;
+}
+
 function validationUserRole() {
     // 로그인한 사용자 권한 확인
     const token = Cookies.get('Authorization').replace('Bearer ', '');
