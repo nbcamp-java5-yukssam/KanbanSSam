@@ -23,3 +23,16 @@ Authorization: {{Authorization}}
   "name":"보드 제목 수정",
   "introduction":"한줄 소개 수정"
 }
+
+### 보드 삭제
+DELETE http://localhost:8080/board/{{boardId}}
+Authorization: {{Authorization}}
+
+### 보드 전체 목록 조회
+GET http://localhost:8080/boards/
+Authorization: {{Authorization}}
+
+### 선택 보드 목록 조회
+GET http://localhost:8080/boards/{{boardId}}
+Authorization: {{Authorization}}
+

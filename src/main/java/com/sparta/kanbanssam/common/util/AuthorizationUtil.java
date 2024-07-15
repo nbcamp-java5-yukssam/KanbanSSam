@@ -20,8 +20,9 @@ public class AuthorizationUtil {
 
     public Board validateUserIsBoardManager(Long boardId, User user) {
         Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new CustomException(ErrorType.BOARD_NOT_FOUND));
-        if (!board.getManager().getId().equals(user.getId())) {
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_BOARD));
+
+        if (!board.getUser().getId().equals(user.getId())) {
             throw new CustomException(ErrorType.NO_AUTHENTICATION);
         }
         return board;

@@ -1,12 +1,7 @@
 package com.sparta.kanbanssam.board.entity;
 
-
 import com.sparta.kanbanssam.board.dto.BoardUpdateRequestDto;
-import com.sparta.kanbanssam.card.entity.Card;
-import com.sparta.kanbanssam.column.entity.Columns;
-import com.sparta.kanbanssam.common.enums.ErrorType;
 import com.sparta.kanbanssam.common.enums.UserRole;
-import com.sparta.kanbanssam.common.exception.CustomException;
 import com.sparta.kanbanssam.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -26,36 +21,29 @@ public class Board {
     @Column(nullable = false, unique = true)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "manager_id", nullable = false)
-    private User manager;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @Column(nullable = false)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invite> invites;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
     private String introduction;
 
-    @OneToMany(mappedBy = "board", orphanRemoval = true)
-    private List<Columns> columnsList;
 
     @Builder
-    public Board(Long id, User manager, String name, String introduction) {
-        this.id = id;
-        this.manager = manager;
+    public Board(User user, String name, String introduction) {
+        this.user = user;
         this.name = name;
         this.introduction = introduction;
     }
-
     public void updateBoard(BoardUpdateRequestDto requestDto) {
         this.name = requestDto.getName();
         this.introduction = requestDto.getIntroduction();
-    }
-
-    public void validateAuthority(User user) {
-        if (!this.manager.getId().equals(user.getId())) {
-            throw new CustomException(ErrorType.BOARD_ACCESS_FORBIDDEN);
-        }
     }
 
 }
