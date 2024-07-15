@@ -1,6 +1,5 @@
 package com.sparta.kanbanssam.board.entity;
 
-import com.sparta.kanbanssam.board.dto.BoardInviteRequsetDto;
 import com.sparta.kanbanssam.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

@@ -1,10 +1,7 @@
 package com.sparta.kanbanssam.board.controller;
 
 
-import com.sparta.kanbanssam.board.dto.BoardRequestDto;
-import com.sparta.kanbanssam.board.dto.BoardResponseDto;
-import com.sparta.kanbanssam.board.dto.BoardUpdateRequestDto;
-import com.sparta.kanbanssam.board.dto.BoardUpdateResponseDto;
+import com.sparta.kanbanssam.board.dto.*;
 import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.board.entity.Guest;
 import com.sparta.kanbanssam.board.service.BoardService;
@@ -44,7 +41,6 @@ public class BoardController {
     }
 
     //보드 선택 조회
-    //보드 선택 조회
     @GetMapping("/{boardId}")
     public ResponseEntity<?> finaBoard(@PathVariable Long boardId,
                                        Guest guest,
@@ -55,14 +51,15 @@ public class BoardController {
     }
 
     //    보드 초대
-    @PostMapping("/boards/{boardId}/invite/{userId}")
+    @PostMapping("/{boardId}/invite/{userId}")
     public ResponseEntity<?> userInviteToBoard(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable Long userId,
             @PathVariable Long boardId) {
         Board board = boardService.inviteGuest(userDetails.getUser(), userId, boardId);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(boardService.inviteGuest(userDetails.getUser(), userId, boardId));
+        BoardInviteResponseDto responseDto = new BoardInviteResponseDto(board);
+
+        return ResponseEntity.ok(responseDto);
     }
 
 
