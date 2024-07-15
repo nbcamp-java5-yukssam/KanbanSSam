@@ -26,6 +26,8 @@ public enum ErrorType {
     NO_AUTHENTICATION(HttpStatus.FORBIDDEN, "권한이 없습니다."),
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다."),
     REQUIRES_LOGIN(HttpStatus.UNAUTHORIZED, "로그인이 필요한 서비스입니다."),
+    INVALID_USER(HttpStatus.BAD_REQUEST, "본인은 조회할 수 없습니다."),
+
 
     //board
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 보드입니다."),

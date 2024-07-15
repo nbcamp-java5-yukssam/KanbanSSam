@@ -2,6 +2,8 @@ package com.sparta.kanbanssam.user.service;
 
 import com.sparta.kanbanssam.common.enums.ErrorType;
 import com.sparta.kanbanssam.common.exception.CustomException;
+import com.sparta.kanbanssam.security.UserDetailsImpl;
+import com.sparta.kanbanssam.user.dto.UserResponseDto;
 import com.sparta.kanbanssam.user.dto.UserSignUpRequestDto;
 import com.sparta.kanbanssam.user.entity.User;
 import com.sparta.kanbanssam.user.repository.UserRepository;
@@ -47,5 +49,18 @@ public class UserService {
 
         //클라이언트에 성공 메시지와 상태코드를 반환한다.
 
+    }
+
+    public UserResponseDto getUsersByEmail(UserDetailsImpl userDetails, String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+
+        if (user.getEmail().equals(userDetails.getUser().getEmail())) {
+            throw new CustomException(ErrorType.INVALID_USER);
+        }
+
+        UserResponseDto userResponseDto = new UserResponseDto(user.getName(), user.getEmail());
+
+        return userResponseDto;
     }
 }
