@@ -96,7 +96,7 @@ public class CardService {
      */
     @Transactional
     public void updateCardOrders(Long columnId, List<Long> cardIdList) {
-        Columns columns = columnRepository.findById(columnId)
+        Columns columns = columnRepository.findByIdWithPessimisticLock(columnId)
                 .orElseThrow(()-> new CustomException(ErrorType.COLUMN_NOT_FOUND));
 
         for (int i = 1; i <= cardIdList.size(); i++) {
@@ -157,7 +157,7 @@ public class CardService {
      * @return 카드 정보
      */
     public Card findCard(Long cardId) {
-        return cardRepository.findById(cardId)
+        return cardRepository.findByIdWithPessimisticLock(cardId)
                 .orElseThrow(()-> new CustomException(ErrorType.CARD_NOT_FOUND));
     }
 }
