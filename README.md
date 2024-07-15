@@ -17,6 +17,39 @@
 </p>
 </details>
 
+## 📷 와이어프레임
+<details>
+<summary> 👨‍🦲회원가입, 로그인, 로그아웃 </summary>
+
+<p>
+<img src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2Fd5abede8-a3c8-41e1-afdd-7b2b8aa13b8f%2F%25ED%259A%258C%25EC%259B%2590%25EB%25A1%259D%25EB%25A1%259C%25EC%2595%2584.png?table=block&id=2e02481a-8bc2-47fd-98a9-203653ddae4e&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=fa8c17e6-ea5a-43ec-9632-2aedfa649e19&cache=v2" width= 700px>
+</p>
+</details>
+
+<details>
+<summary> 🔲보드 </summary>
+
+<p>
+<img src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F80805a6a-c8fc-4c32-b61b-13295a017a2c%2F%25EB%25B3%25B4%25EB%2593%259C_%25EC%2588%2598%25EC%25A0%2595.png?table=block&id=307592ef-6a5b-4040-a6e4-707505b31a57&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=fa8c17e6-ea5a-43ec-9632-2aedfa649e19&cache=v2" width= 700px>
+</p>
+</details>
+
+<details>
+<summary> 📑칼럼, 카드 </summary>
+
+<p>
+<img src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F36d77c9a-9961-4d1d-9b5b-6d0f7b8ee66d%2F%25EC%25B9%25BC%25EB%259F%25BC_%25EC%2588%2598%25EC%25A0%2595.png?table=block&id=fb1eb211-34b7-4367-96ad-1df35903bcef&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=2000&userId=fa8c17e6-ea5a-43ec-9632-2aedfa649e19&cache=v2" width= 700px>
+</p>
+</details>
+
+<details>
+<summary> 📊카드 상세 </summary>
+
+<p>
+<img src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F83c75a39-3aba-4ba4-a792-7aefe4b07895%2F6cdb28ce-c0a6-433a-a666-b6a5bb51a81e%2F%25EC%25B9%25B4%25EB%2593%259C_%25EC%2583%2581%25EC%2584%25B8.png?table=block&id=fbb77ba9-84d0-46c6-914f-a55325621bdf&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&width=1680&userId=fa8c17e6-ea5a-43ec-9632-2aedfa649e19&cache=v2" width= 700px>
+</p>
+</details>
+
 
 ## 💬주요기능
 
