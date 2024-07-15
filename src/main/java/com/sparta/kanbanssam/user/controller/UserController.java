@@ -39,13 +39,12 @@ public class UserController {
     /**
      * 회원가입 API
      * @param requestDto 회원가입 내용
-     * @return
+     * @return ResponseEntity: 응답 코드, 응답 메시지
      */
     @PostMapping("")
     public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpRequestDto requestDto) {
-        log.info("찍힐까요!?");
         userService.signUp(requestDto);
-        return ResponseEntity.ok("응답부 추후 수정");
+        return ResponseEntity.ok("회원가입 완료");
     }
 
     /**

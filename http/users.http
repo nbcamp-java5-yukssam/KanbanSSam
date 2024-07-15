@@ -1,3 +1,14 @@
+### 회원가입
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "accountId": "{{accountId}}",
+  "password": "{{password}}",
+  "name": "{{name}}"
+}
+
 ### 로그인
 POST http://localhost:8080/users/login
 Content-Type: application/json
@@ -18,10 +29,30 @@ Content-Type: application/json
 ### 로그아웃
 POST http://localhost:8080/users/logout
 Authorization: {{Authorization}}
-RefreshToken: {{RefreshToken}}
+RefreshToekn: {{RefreshToken}}
 
 
 > {%
     client.global.clear("Authorization");
     client.global.clear("RefreshToken");
 %}
+
+### 유저 찾기
+GET http://localhost:8080/users
+Content-Type: application/json
+Authorization: {{Authorization}}
+RefreshToekn: {{RefreshToken}}
+
+{
+  "email": "test1234@gmail.com"
+}
+
+### 유저 찾기 fail case(user1로 로그인시)
+GET http://localhost:8080/users
+Content-Type: application/json
+Authorization: {{Authorization}}
+RefreshToekn: {{RefreshToken}}
+
+{
+  "email": "user11111@gmail.com"
+}
