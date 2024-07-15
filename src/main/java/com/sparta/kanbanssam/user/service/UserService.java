@@ -59,8 +59,6 @@ public class UserService {
             throw new CustomException(ErrorType.INVALID_USER);
         }
 
-        UserResponseDto userResponseDto = new UserResponseDto(user.getName(), user.getEmail());
-
-        return userResponseDto;
+        return new UserResponseDto(user.getName(), user.getEmail());
     }
 }
