@@ -3,8 +3,8 @@ POST http://localhost:8080/users/login
 Content-Type: application/json
 
 {
-  "accountId": "{{accountId}}",
-  "password": "{{password}}"
+  "accountId": "test1",
+  "password": "test123!"
 }
 
 > {%
@@ -17,8 +17,8 @@ Content-Type: application/json
 
 ### 로그아웃
 POST http://localhost:8080/users/logout
-Authorization: {{Authorization}}
-RefreshToken: {{RefreshToken}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImF1dGgiOiJNQU5BR0VSIiwiZXhwIjoxNzIxMDE0MzI5LCJpYXQiOjE3MjEwMTA3Mjl9.KhA23TM_n1v44aPej_wkgo8XdxjtRIb9JfTZ5H_Msu0
+RefreshToken: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsImF1dGgiOiJNQU5BR0VSIiwiZXhwIjoxNzIyMjIwMzI5LCJpYXQiOjE3MjEwMTA3Mjl9.2cq1__7k4CxO6vWMyi1aZjjVo0V7NMlLMVtrYMEknTM
 
 
 > {%

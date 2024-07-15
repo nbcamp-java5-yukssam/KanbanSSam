@@ -27,8 +27,8 @@ public class Board {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "manager_id", nullable = false)
-    private User manager;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(nullable = false)
     private String name;
@@ -40,9 +40,9 @@ public class Board {
     private List<Columns> columnsList;
 
     @Builder
-    public Board(Long id, User manager, String name, String introduction) {
+    public Board(Long id, User user, String name, String introduction) {
         this.id = id;
-        this.manager = manager;
+        this.user = user;
         this.name = name;
         this.introduction = introduction;
     }
@@ -53,7 +53,7 @@ public class Board {
     }
 
     public void validateAuthority(User user) {
-        if (!this.manager.getId().equals(user.getId())) {
+        if (!this.user.getId().equals(user.getId())) {
             throw new CustomException(ErrorType.BOARD_ACCESS_FORBIDDEN);
         }
     }
