@@ -1,6 +1,8 @@
 package com.sparta.kanbanssam.user.controller;
 
 import com.sparta.kanbanssam.security.UserDetailsImpl;
+import com.sparta.kanbanssam.user.dto.EmailRequestDto;
+import com.sparta.kanbanssam.user.dto.UserResponseDto;
 import com.sparta.kanbanssam.user.dto.UserSignUpRequestDto;
 import com.sparta.kanbanssam.user.service.UserService;
 import jakarta.validation.Valid;
@@ -58,4 +60,11 @@ public class UserController {
     }
 
     //회원조회 GET /users
+    @GetMapping("")
+    public ResponseEntity<?> getUsers(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                      @RequestBody EmailRequestDto requestDto) {
+        UserResponseDto userResponseDto = userService.getUsersByEmail(userDetails, requestDto.getEmail());
+        return ResponseEntity.ok(userResponseDto);
+    }
+
 }
