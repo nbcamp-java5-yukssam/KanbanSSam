@@ -1,13 +1,3 @@
-function getAccessToken() {
-    let access = Cookies.get('Authorization');
-
-    if(access === undefined) {
-        return '';
-    }
-
-    return access;
-}
-
 // 카드 추가 팝업 열기
 function openAddCardPopup(columnId) {
     $('#card-add-container').addClass('active');
