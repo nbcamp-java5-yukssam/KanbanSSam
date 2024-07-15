@@ -11,8 +11,10 @@ public enum ErrorType {
     // JWT
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 리프레시 토큰입니다. 다시 로그인 해주세요."),
     NOT_FOUND_AUTHENTICATION_INFO(HttpStatus.NOT_FOUND, "인증 정보를 찾을 수 없습니다."),
+    NOT_FOUND_TOKEN(HttpStatus.NOT_FOUND, "토큰을 찾을 수 없습니다."),
     INVALID_JWT(HttpStatus.UNAUTHORIZED, "유효하지 않는 JWT 입니다."),
     EXPIRED_JWT(HttpStatus.FORBIDDEN, "만료된 JWT 입니다."),
+    UNSUPPORTED_JWT(HttpStatus.BAD_REQUEST, "지원되지 않는 JWT입니다."),
     LOGGED_OUT_TOKEN(HttpStatus.FORBIDDEN, "이미 로그아웃된 토큰입니다."),
 
     // user
