@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
 
     <link rel="stylesheet" href="/css/card.css">
+    <script src="/js/auth.js"></script>
     <script src="/js/card.js"></script>
     <script src="/js/column.js"></script>
 </head>
@@ -34,11 +35,13 @@
 
             <h1 th:text="${cardListByColumn.getColumnName()}"></h1>
 
-            <button th:onclick="openUpdateColumnPopup(
+            <div class="column-btn-container">
+                <button th:onclick="openUpdateColumnPopup(
             [[${cardListByColumn.columnId}]],
             [[${cardListByColumn.getColumnName()}]])">Update Column</button>
 
-            <button th:onclick="deleteColumn([[${cardListByColumn.columnId}]])">Delete Column</button>
+                <button th:onclick="deleteColumn([[${cardListByColumn.columnId}]])">Delete Column</button>
+            </div>
 
             <div th:id="${cardListByColumn.columnId}"
                  class="card-container">
@@ -67,7 +70,7 @@
             <button th:onclick="openAddCardPopup([[${cardListByColumn.getColumnId()}]])">Add Card</button>
         </div>
 
-        <div style="float: right">
+        <div class="column-btn-container" style="float: right">
             <button th:onclick="openAddColumnPopup()">Add Column</button>
         </div>
 
