@@ -1,11 +1,11 @@
 package com.sparta.kanbanssam.card.entity;
 
-import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.card.dto.CardRequestDto;
 import com.sparta.kanbanssam.column.entity.Columns;
 import com.sparta.kanbanssam.comment.entity.Comment;
 import com.sparta.kanbanssam.common.entity.Timestamped;
 import com.sparta.kanbanssam.common.enums.ErrorType;
+import com.sparta.kanbanssam.common.enums.UserRole;
 import com.sparta.kanbanssam.common.exception.CustomException;
 import com.sparta.kanbanssam.user.entity.User;
 import jakarta.persistence.*;
@@ -31,9 +31,8 @@ public class Card extends Timestamped {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "board_id", nullable = false)
-    private Board board;
+    @Column
+    private String responsiblePerson;
 
     @ManyToOne
     @JoinColumn(name = "column_id", nullable = false)
@@ -46,9 +45,6 @@ public class Card extends Timestamped {
     private String content;
 
     @Column
-    private String responsiblePerson;
-
-    @Column
     private LocalDateTime deadline;
 
     @Column(nullable = false)
@@ -58,10 +54,9 @@ public class Card extends Timestamped {
     private List<Comment> commentList;
 
     @Builder
-    public Card(Long id, User user, Board board, Columns columns, String title, String content, String responsiblePerson, LocalDateTime deadline, Long orders) {
+    public Card(Long id, User user, Columns columns, String title, String content, String responsiblePerson, LocalDateTime deadline, Long orders) {
         this.id = id;
         this.user = user;
-        this.board = board;
         this.columns = columns;
         this.title = title;
         this.content = content;
@@ -78,8 +73,7 @@ public class Card extends Timestamped {
      * @param user 회원 정보
      */
     public void validateAuthority(User user) {
-        // todo : User 구현 완료 시 UserRole 권한 체크 로직도 추가
-        if (!this.getUser().getId().equals(user.getId())) {
+        if (!this.user.getId().equals(user.getId()) && !UserRole.MANAGER.equals(user.getUserRole())) {
             throw new CustomException(ErrorType.CARD_ACCESS_FORBIDDEN);
         }
     }
@@ -107,5 +101,15 @@ public class Card extends Timestamped {
         this.content = content;
         this.responsiblePerson = responsiblePerson;
         this.deadline = deadline;
+    }
+
+    /**
+     * 키드 순서 및 컬럼 이동
+     * @param orders
+     * @param columns
+     */
+    public void updateOrders(Long orders, Columns columns) {
+        this.columns = columns;
+        this.orders = orders;
     }
 }

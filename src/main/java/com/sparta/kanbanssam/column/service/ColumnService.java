@@ -8,6 +8,7 @@ import com.sparta.kanbanssam.column.entity.Columns;
 import com.sparta.kanbanssam.column.repository.ColumnRepository;
 import com.sparta.kanbanssam.common.enums.ErrorType;
 import com.sparta.kanbanssam.common.exception.CustomException;
+import com.sparta.kanbanssam.common.authorization.AuthorizationService;
 import com.sparta.kanbanssam.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,25 @@ import org.springframework.transaction.annotation.Transactional;
 public class ColumnService {
 
     private final ColumnRepository columnRepository;
-    private final BoardRepository boardRepository;
+    private final AuthorizationService authorizationService;
 
+    /**
+     * 컬럼 생성
+     * @param boardId 보드 ID
+     * @param requestDto 컬럼 생성 정보
+     * @param user 회원 정보
+     * @return 컬럼 정보
+     */
     @Transactional
     public ColumnResponseDto createColum(Long boardId, ColumnRequestDto requestDto, User user) {
-        // todo : BoardService에 Board 엔티티 조회 메서드 생성 시 수정
-        Board board = boardRepository.findById(boardId).orElseThrow(
-                ()-> new CustomException(ErrorType.BOARD_NOT_FOUND));
+
+        // 요청한 사용자가 해당 보드의 관리자임을 확인
+        Board board = authorizationService.validateUserIsBoardManager(boardId, user);
+
+        // 동일한 이름의 컬럼이 이미 존재하는지 확인
+        if (columnRepository.existsByBoardIdAndName(board.getId(), requestDto.getName())) {
+            throw new CustomException(ErrorType.COLUMN_ALREADY_EXISTS);
+        }
 
         // 해당 보드에 존재하는 컬럼 총 개수
         Long columnCnt = columnRepository.countAllByBoardId(boardId);
@@ -39,4 +52,55 @@ public class ColumnService {
 
         return new ColumnResponseDto(saveColumn);
     }
+
+
+    /**
+     * 컬럼 수정
+     * @param columnId 컬럼 ID
+     * @param requestDto 컬럼 수정 정보
+     * @param user 회원 정보
+     * @return 컬럼 정보
+     */
+    @Transactional
+    public ColumnResponseDto updateColumn(Long columnId, ColumnRequestDto requestDto, User user) {
+
+        Columns column = getColumn(columnId);
+
+        // 컬럼 작성자가 아닐 경우 예외처리(보드 매니저가 아닐경우)
+        Board board =authorizationService.validateUserIsBoardManager(column.getBoard().getId(), user);
+
+        // 동일한 이름의 컬럼이 이미 존재하는지 확인
+        if (columnRepository.existsByBoardIdAndName(board.getId(), requestDto.getName())) {
+            throw new CustomException(ErrorType.COLUMN_ALREADY_EXISTS);
+        }
+
+        column.update(requestDto);
+
+        return new ColumnResponseDto(column);
+    }
+
+    /**
+     * 컬럼 삭제
+     * @param columnId 컬럼 ID
+     * @param user 회원 정보
+     */
+    @Transactional
+    public void deleteColumn(Long columnId, User user) {
+        Columns column = getColumn(columnId);
+
+        // 컬럼 작성자가 아닐 경우 예외처리(보드 매니저가 아닐경우)
+        authorizationService.validateUserIsBoardManager(column.getBoard().getId(), user);
+        columnRepository.delete(column);
+    }
+
+    /**
+     * Id로 Columns 엔티티 찾기
+     * @param columnId 컬럼 ID
+     * @return 컬럼 정보
+     */
+    private Columns getColumn(Long columnId) {
+        return columnRepository.findById(columnId)
+                .orElseThrow(()-> new CustomException(ErrorType.COLUMN_NOT_FOUND));
+    }
+
 }
