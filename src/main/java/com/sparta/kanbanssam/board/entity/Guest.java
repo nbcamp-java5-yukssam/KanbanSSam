@@ -3,17 +3,24 @@ package com.sparta.kanbanssam.board.entity;
 import com.sparta.kanbanssam.board.dto.BoardInviteRequsetDto;
 import com.sparta.kanbanssam.user.entity.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "Invite")
-public class Invite {
+@NoArgsConstructor
+@Table(name = "Guest")
+public class Guest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     private Long id;
+
+    @Email
+    @Column(nullable = false)
+    private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -23,8 +30,10 @@ public class Invite {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    public void inviteUser(BoardInviteRequsetDto requsetDto) {
-        user = requsetDto.getUser();
-        board = requsetDto.getBoard();
+
+    public Guest(User user, Board board) {
+        this.user = user;
+        this.board = board;
+        this.email = user.getEmail();
     }
 }

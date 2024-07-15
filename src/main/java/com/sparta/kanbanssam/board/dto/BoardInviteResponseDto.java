@@ -8,12 +8,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 
-public class BoardInviteRequsetDto {
-
+public class BoardInviteResponseDto {
+    private String boardName;
     private String email;
     private String name;
 
-    private BoardInviteRequsetDto(User user, Board board) {
+    private BoardInviteResponseDto(User user, Board board) {
+        this.boardName = board.getName();
         this.name = user.getName();
         this.email = user.getEmail();
     }

@@ -1,13 +1,17 @@
 package com.sparta.kanbanssam.board.controller;
 
 
-import com.sparta.kanbanssam.board.dto.*;
+import com.sparta.kanbanssam.board.dto.BoardRequestDto;
+import com.sparta.kanbanssam.board.dto.BoardResponseDto;
+import com.sparta.kanbanssam.board.dto.BoardUpdateRequestDto;
+import com.sparta.kanbanssam.board.dto.BoardUpdateResponseDto;
 import com.sparta.kanbanssam.board.entity.Board;
-import com.sparta.kanbanssam.board.entity.Invite;
+import com.sparta.kanbanssam.board.entity.Guest;
 import com.sparta.kanbanssam.board.service.BoardService;
 import com.sparta.kanbanssam.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,6 +25,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardservice;
+    private final BoardService boardService;
 
     @ResponseBody
     @PostMapping
@@ -42,40 +47,41 @@ public class BoardController {
     //보드 선택 조회
     @GetMapping("/{boardId}")
     public ResponseEntity<?> finaBoard(@PathVariable Long boardId,
-                                       Invite invite,
+                                       Guest guest,
                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Board board = boardservice.findBoard(boardId, userDetails.getUser(), invite);
+        Board board = boardservice.findBoard(boardId, userDetails.getUser(), guest);
         BoardResponseDto responseDto = new BoardResponseDto(board);
         return ResponseEntity.ok(responseDto);
     }
 
-//    보드 초대
-    @ResponseBody
-    @PostMapping("/{boardId}/invite")
-    public ResponseEntity<?> inviteUser(@PathVariable Long boardId,
-                                        @RequestBody BoardInviteRequsetDto requsetDto,
-                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Board board = boardservice.inviteUserToBoard(boardId, requsetDto, userDetails.getUser());
-        BoardResponseDto requestDto = new BoardResponseDto(board);
-        return ResponseEntity.ok(requestDto);
+    //    보드 초대
+    @PostMapping("/boards/{boardId}/invite/{userId}")
+    public ResponseEntity<?> userInviteToBoard(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable Long userId,
+            @PathVariable Long boardId) {
+        Board board = boardService.inviteGuest(userDetails.getUser(), userId, boardId);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(boardService.inviteGuest(userDetails.getUser(), userId, boardId));
     }
 
-    //상품수정
-    @PutMapping("/{boardId}")
-    public ResponseEntity<?> updateBoard(@RequestBody BoardUpdateRequestDto requestDto,
-                                         @PathVariable Long boardId,
-                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Board board = boardservice.updateBoard(boardId, requestDto, userDetails.getUser());
-        BoardUpdateResponseDto reponseDto = new BoardUpdateResponseDto(board);
 
-        return ResponseEntity.ok(reponseDto);
-    }
+        //상품수정
+        @PutMapping("/{boardId}")
+        public ResponseEntity<?> updateBoard (@RequestBody BoardUpdateRequestDto requestDto,
+                @PathVariable Long boardId,
+                @AuthenticationPrincipal UserDetailsImpl userDetails){
+            Board board = boardservice.updateBoard(boardId, requestDto, userDetails.getUser());
+            BoardUpdateResponseDto reponseDto = new BoardUpdateResponseDto(board);
 
-    //보드 삭제
-    @DeleteMapping("/{boardId}")
-    public ResponseEntity<?> deleteBoard(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                         @PathVariable Long boardId) {
-        boardservice.deleteBoard(boardId, userDetails.getUser());
-        return ResponseEntity.ok().body("보드가 삭제되었습니다.");
+            return ResponseEntity.ok(reponseDto);
+        }
+
+        //보드 삭제
+        @DeleteMapping("/{boardId}")
+        public ResponseEntity<?> deleteBoard (@AuthenticationPrincipal UserDetailsImpl userDetails,
+                @PathVariable Long boardId){
+            boardservice.deleteBoard(boardId, userDetails.getUser());
+            return ResponseEntity.ok().body("보드가 삭제되었습니다.");
+        }
     }
-}

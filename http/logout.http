@@ -1,0 +1,10 @@
+### 로그아웃
+POST http://localhost:8080/users/logout
+Authorization: {{Authorization}}
+RefreshToekn: {{RefreshToken}}
+
+
+> {%
+    client.global.clear("Authorization");
+    client.global.clear("RefreshToken");
+%}

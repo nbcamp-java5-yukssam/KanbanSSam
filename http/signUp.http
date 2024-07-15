@@ -4,8 +4,8 @@ POST http://localhost:8080/users
 Content-Type: application/json
 
 {
-  "email": "{{email}}",
-  "accountId": "{{accountId}}",
-  "password": "{{password}}",
-  "name": "{{name}}"
+  "email": "test3@email.com",
+  "accountId": "test3",
+  "password": "test123!",
+  "name": "TEST3"
 }
