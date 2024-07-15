@@ -122,7 +122,7 @@ public class CardService {
      */
     public List<CardResponseDto> getCardListByBoard(Long boardId) {
         Board board = boardRepository.findById(boardId)
-                .orElseThrow(()-> new CustomException(ErrorType.BOARD_NOT_FOUND));
+                .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_BOARD));
 
         return cardRepository.getCardListByBoard(boardId);
     }
@@ -146,7 +146,7 @@ public class CardService {
      */
     public List<CardListByColumnsResponseDto> getCardListByColumn(Long boardId) {
         Board board = boardRepository.findById(boardId)
-                .orElseThrow(()-> new CustomException(ErrorType.BOARD_NOT_FOUND));
+                .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_BOARD));
 
         return cardRepository.getCardListByColumnAtBoard(board);
     }

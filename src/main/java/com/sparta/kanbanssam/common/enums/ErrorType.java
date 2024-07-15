@@ -30,10 +30,12 @@ public enum ErrorType {
 
 
     //board
-    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 보드입니다."),
-    USER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "유저가 존재하지 않습니다."),
+    NOT_FOUND_BOARD(HttpStatus.NOT_FOUND,"존재하지 않는 보드입니다."),
     USER_NOT_AUTHORIZATION(HttpStatus.UNAUTHORIZED, "보드를 생성할 권한이 없습니다."),
     BOARD_ACCESS_FORBIDDEN(HttpStatus.FORBIDDEN, "보드 작성자 및 관리자만 접근할 수 있습니다."),
+    NOT_FOUND_USER_BOARD(HttpStatus.NOT_FOUND, "유저가 보유한 보드가 존재하지 않습니다."),
+    NOT_BOARD_USER(HttpStatus.NOT_ACCEPTABLE, "보드의 가입된 사용자가 아닙니다."),
+    DUPLICATE_INVITE_USER(HttpStatus.LOCKED, "이미 보드에 가입된 회원입니다."),
 
     // column
     COLUMN_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 컬럼입니다."),
