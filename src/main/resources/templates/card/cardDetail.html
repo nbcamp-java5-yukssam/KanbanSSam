@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/css/card.css">
+    <script src="/js/card.js"></script>
+    <script src="/js/comment.js"></script>
+
+</head>
+<body>
+<div class="card-detail">
+    <span>제목 : </span><span th:text="${card.getTitle()}"></span>
+    <br/>
+    <span>담당자 : </span><span th:text="${card.getResponsiblePerson()}"></span>
+    <br/>
+    <span>마감일자 : </span><span th:text="${card.getDeadline()}"></span>
+    <br/>
+    <span>내용 : </span><span th:text="${card.getContent()}"></span>
+    <br/>
+
+    <div class="comment-container">
+        <input id="comment" placeholder="댓글을 입력하세요.">
+        <button id="submit" type="button" onclick="addComment()">등록</button>
+        <div id="comment-list">
+        </div>
+    </div>
+</div>
+</body>
+</html>

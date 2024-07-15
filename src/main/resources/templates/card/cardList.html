@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>cardList</title>
+
+    <!-- jquery, ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- cookie -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+
+    <link rel="stylesheet" href="/css/card.css">
+    <script src="/js/auth.js"></script>
+    <script src="/js/card.js"></script>
+    <script src="/js/column.js"></script>
+</head>
+<body>
+<div class="board-container">
+    <div class="nav">
+        <div class="nav-colum active">
+            컬럼별
+        </div>
+        <div class="nav-all">
+            전체
+        </div>
+        <div class="nav-user">
+            사용자별
+        </div>
+    </div>
+    <div th:id="${boardId}" class="column-container">
+
+        <div th:each="cardListByColumn : ${cardListByColumn}"
+             th:id="'column-'+${cardListByColumn.columnId}"
+             class="column" draggable="true">
+
+            <h1 th:text="${cardListByColumn.getColumnName()}"></h1>
+
+            <div class="column-btn-container">
+                <button th:onclick="openUpdateColumnPopup(
+            [[${cardListByColumn.columnId}]],
+            [[${cardListByColumn.getColumnName()}]])">Update Column</button>
+
+                <button th:onclick="deleteColumn([[${cardListByColumn.columnId}]])">Delete Column</button>
+            </div>
+
+            <div th:id="${cardListByColumn.columnId}"
+                 class="card-container">
+                <div th:each="cardList : ${cardListByColumn.getCardList()}"
+                     th:id="'card-'+${cardList.getCardId()}"
+                     class="card" draggable="true">
+                    <div class="text">
+                        <span th:text="${cardList.getTitle()}"></span>
+                    </div>
+                    <div class="text">
+                        <span>담당자 : </span><span th:text="${cardList.getResponsiblePerson()}"></span>
+                    </div>
+                    <button th:onclick="|location.href='@{'/cards/'+${cardList.getCardId()}}'|"
+                            type="button">상세</button>
+                    <button th:onclick="deleteCard([[${cardList.getCardId()}]])"
+                            type="button">삭제</button>
+                    <button th:onclick="openUpdateCardPopup(
+                [[${cardList.getCardId()}]],
+                [[${cardList.getTitle()}]],
+                [[${cardList.getResponsiblePerson()}]],
+                [[${cardList.getContent()}]],
+                [[${cardList.getDeadline}]])"
+                            type="button">수정</button>
+                </div>
+            </div>
+            <button th:onclick="openAddCardPopup([[${cardListByColumn.getColumnId()}]])">Add Card</button>
+        </div>
+
+        <div class="column-btn-container" style="float: right">
+            <button th:onclick="openAddColumnPopup()">Add Column</button>
+        </div>
+
+    </div>
+
+    <div th:id="'all-'+${boardId}" class="all-container">
+
+    </div>
+
+    <div th:id="'user-'+${boardId}" class="user-container">
+        <span>user-container</span>
+    </div>
+</div>
+
+<!-- 카드 추가 팝업 -->
+<div id="card-add-container" class="popup-container">
+    <div class="popup" style="width:410px; height:auto">
+        <input type="hidden" id="columnId" value="">
+        <button id="card-close" class="close" onclick="closeAddCardPopup()">
+            X
+        </button>
+        <h1>🗂 카드 추가하기</h1>
+        <div id="card-input">
+            <span>제목 : </span><input type="text" id="title" name="title" placeholder="카드 제목">
+            </br>
+            <span>담당자 : </span><input type="text" id="responsiblePerson" name="responsiblePerson" placeholder="담당자">
+            </br>
+            <span>내용 : </span><input type="text" id="content" name="content" placeholder="내용">
+            </br>
+            <span>마감일자 : </span><input type="datetime-local" id="deadline" name="deadline">
+            </br>
+        </div>
+        <button id="add-card-btn" class="cta2" onclick="addCard()">추가하기</button>
+    </div>
+</div>
+
+<!-- 카드 수정 팝업 -->
+<div id="card-update-container" class="popup-container">
+    <div class="popup" style="width:410px; height:auto">
+        <input type="hidden" id="update-cardId" value="">
+        <button id="card-update-close" class="close" onclick="closeUpdateCardPopup()">
+            X
+        </button>
+        <h1>🗂 카드 수정하기</h1>
+        <div id="card-update-input">
+            <span>제목 : </span><input type="text" id="update-title" name="title" placeholder="카드 제목">
+            <br/>
+            <span>담당자 : </span><input type="text" id="update-responsiblePerson" name="responsiblePerson" placeholder="담당자">
+            <br/>
+            <span>내용 : </span><input type="text" id="update-content" name="content" placeholder="내용">
+            <br/>
+            <span>마감일자 : </span><input type="datetime-local" id="update-deadline" name="deadline">
+            <br/>
+        </div>
+        <button id="update-card-btn" class="cta2" onclick="updateCard()">수정하기</button>
+    </div>
+</div>
+
+<!-- 컬럼 추가 팝업 -->
+<div id="column-add-container" class="popup-container">
+    <div class="popup" style="width:410px; height:auto">
+        <button id="column-close" class="close" onclick="closeAddColumnPopup()">
+            X
+        </button>
+        <h1>🗂 컬럼 추가하기</h1>
+        <div id="column-add-input">
+            <input type="text" id="name" name="name" placeholder="컬럼 이름">
+        </div>
+        <button id="add-column-btn" class="cta2" onclick="addColumn()">추가하기</button>
+    </div>
+</div>
+
+<!-- 컬럼 수정 팝업 -->
+<div id="column-update-container" class="popup-container">
+    <div class="popup" style="width:410px; height:auto">
+        <button id="column-update-close" class="close" onclick="closeUpdateColumnPopup()">
+            X
+        </button>
+        <h1>🗂 컬럼 수정하기</h1>
+        <div id="column-update-input">
+            <input type="hidden" id="update-column-id" value="">
+            <input type="text" id="update-name" name="name" placeholder="컬럼 이름">
+        </div>
+        <button id="update-column-btn" class="cta2" onclick="updateColumn()">수정하기</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"
+        integrity="sha512-zYXldzJsDrNKV+odAwFYiDXV2Cy37cwizT+NkuiPGsa9X1dOz04eHvUWVuxaJ299GvcJT31ug2zO4itXBjFx4w=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+</body>
+</html>

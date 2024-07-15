@@ -30,8 +30,7 @@ public class Comment extends Timestamped {
     private User user;
 
     @Builder
-    public Comment(Long id, String comment, Card card, User user) {
-        this.id = id;
+    public Comment(String comment, Card card, User user) {
         this.comment = comment;
         this.card = card;
         this.user = user;

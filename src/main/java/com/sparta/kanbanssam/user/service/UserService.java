@@ -51,15 +51,6 @@ public class UserService {
 
     }
 
-    @Transactional
-    public void logout(String accountId) {
-        User user = userRepository.findByAccountId(accountId)
-                .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
-
-        user.setRefreshToken(null);
-        userRepository.save(user);
-    }
-
     public UserResponseDto getUsersByEmail(UserDetailsImpl userDetails, String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));

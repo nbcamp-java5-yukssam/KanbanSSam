@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ColumnRepository extends JpaRepository<Columns, Long> {
     Long countAllByBoardId(Long boardId);
+
+    boolean existsByBoardIdAndName(Long id, String name);
 }
