@@ -48,7 +48,11 @@ public class UserController {
         return ResponseEntity.ok("응답부 추후 수정");
     }
 
-    //회원조회 GET /users
+    /**
+     * 회원조회 API
+     * @param requestDto 초대할 사용자 이메일, userDetails
+     * @return userResponseDto 초대할 사용자 이메일, 이름
+     */
     @GetMapping("")
     public ResponseEntity<?> getUsers(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                       @RequestBody EmailRequestDto requestDto) {
