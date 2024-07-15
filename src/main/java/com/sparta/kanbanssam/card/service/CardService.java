@@ -81,6 +81,7 @@ public class CardService {
      * @param cardId 카드 ID
      * @param user 회원 정보
      */
+    @Transactional
     public void deleteCard(Long cardId, User user) {
         Card card = findCard(cardId);
         card.validateAuthority(user);
@@ -112,6 +113,7 @@ public class CardService {
      * @param cardId 카드 ID
      * @return 카드 정보
      */
+    @Transactional
     public CardResponseDto getCard(Long cardId) {
         return new CardResponseDto(findCard(cardId));
     }
