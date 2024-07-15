@@ -12,12 +12,30 @@
     <link rel="stylesheet" href="/css/board.css">
     <script src="/js/auth.js"></script>
     <script src="/js/board.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("button[type='submit']").click(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: '/users/logout',
+                    type: 'POST',
+                    success: function(response) {
+                        window.location.href = '/users/view/login-page';
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Logout failed:', error);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 
 <div class="board-container">
 
     <h1><span id="user-name"></span>의 보드 목록</h1>
+    <button type="submit">Logout</button>
 
     <div class="board-list"></div>
 
@@ -26,14 +44,10 @@
     </div>
 </div>
 
-
-
 <!-- 보드 추가 팝업 -->
 <div id="board-add-container" class="popup-container">
     <div class="popup" style="width:410px; height:auto">
-        <button id="board-close" class="close" onclick="closeAddBoardPopup()">
-            X
-        </button>
+        <button id="board-close" class="close" onclick="closeAddBoardPopup()">X</button>
         <h1>🗂 보드 추가하기</h1>
         <div id="board-input">
             <span>이름 : </span><input type="text" id="name" name="name" placeholder="보드 이름">
@@ -49,9 +63,7 @@
 <div id="board-update-container" class="popup-container">
     <div class="popup" style="width:410px; height:auto">
         <input type="hidden" id="update-board-id" value="">
-        <button id="update-board-close" class="close" onclick="closeUpdateBoardPopup()">
-            X
-        </button>
+        <button id="update-board-close" class="close" onclick="closeUpdateBoardPopup()">X</button>
         <h1>🗂 보드 수정하기</h1>
         <div id="update-board-input">
             <span>이름 : </span><input type="text" id="update-name" name="name" placeholder="보드 이름">
@@ -67,9 +79,7 @@
 <div id="board-invite-container" class="popup-container">
     <div class="popup" style="width:410px; height:auto">
         <input type="hidden" id="invite-board-id" value="">
-        <button id="invite-board-close" class="close" onclick="closeInviteBoardPopup()">
-            X
-        </button>
+        <button id="invite-board-close" class="close" onclick="closeInviteBoardPopup()">X</button>
         <h1>🗂 보드 초대하기</h1>
         <div id="invite-board-input">
             <span>email : </span><input type="email" id="invite-email" name="email" placeholder="이메일을 입력해주세요.">
@@ -77,8 +87,7 @@
             <button onclick="findUser()">Add</button>
         </div>
 
-        <div class="invite-list">
-        </div>
+        <div class="invite-list"></div>
 
         <button id="invite-board-btn" class="cta2" onclick="inviteBoard()">초대하기</button>
     </div>
