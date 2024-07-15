@@ -49,13 +49,13 @@ public class UserController {
 
     /**
      * 회원조회 API
-     * @param requestDto 초대할 사용자 이메일, userDetails
+//     * @param requestDto 초대할 사용자 이메일, userDetails
      * @return userResponseDto 초대할 사용자 이메일, 이름
      */
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<?> getUsers(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                      @RequestBody EmailRequestDto requestDto) {
-        UserResponseDto userResponseDto = userService.getUsersByEmail(userDetails, requestDto.getEmail());
+                                      String email) {
+        UserResponseDto userResponseDto = userService.getUsersByEmail(userDetails, email);
         return ResponseEntity.ok(userResponseDto);
     }
 

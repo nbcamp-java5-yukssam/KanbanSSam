@@ -51,6 +51,8 @@ public class UserService {
 
     }
 
+    //유저조회
+
     public UserResponseDto getUsersByEmail(UserDetailsImpl userDetails, String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
