@@ -10,7 +10,7 @@ Content-Type: application/json
 Authorization: {{Authorization}}
 
 {
-  "name":"보드 제목",
+  "name":"board1",
   "introduction":"한줄소개"
 }
 

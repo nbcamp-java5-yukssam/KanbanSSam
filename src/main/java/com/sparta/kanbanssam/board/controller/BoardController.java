@@ -10,14 +10,17 @@ import com.sparta.kanbanssam.board.service.BoardService;
 import com.sparta.kanbanssam.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/boards")
 @RequiredArgsConstructor
+@Slf4j
 public class BoardController {
 
     private final BoardService boardservice;
@@ -42,5 +45,15 @@ public class BoardController {
         BoardUpdateResponseDto reponseDto = new BoardUpdateResponseDto(board);
 
         return ResponseEntity.ok(reponseDto);
+    }
+
+    @GetMapping("/boardList")
+    public String boardListView(Model model) {
+        return "/board/boardList";
+    }
+
+    @GetMapping("/boardTest")
+    public String boardTestView(Model model) {
+        return "/board/boardTest";
     }
 }
