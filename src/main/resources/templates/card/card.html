@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>card</title>
+
+    <!-- jquery, ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="/css/card.css">
+    <script src="/js/card.js"></script>
+
+</head>
+<body>
+<button id="card-add" onclick="openAddCardPopup()">Add Card</button>
+<!-- 폴더 추가 팝업 -->
+<div id="card-container" class="popup-container">
+    <div class="popup" style="width:410px; height:auto">
+        <button id="card-close" class="close" onclick="closeAddCardPopup()">
+            X
+        </button>
+        <h1>🗂 카드 추가하기</h1>
+        <div id="card-input">
+            <input type="text" id="title" name="title" placeholder="카드 제목">
+            <input type="text" id="responsiblePerson" name="responsiblePerson" placeholder="담당자">
+            <input type="text" id="content" name="content" placeholder="내용">
+            <input type="datetime-local" id="deadline" name="deadline">
+        </div>
+        <button id="add-card-btn" class="cta2" onclick="addCard()">추가하기</button>
+    </div>
+</div>
+</body>
+</html>

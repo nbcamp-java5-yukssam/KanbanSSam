@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>cardList</title>
+
+    <!-- jquery, ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- cookie -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+
+    <link rel="stylesheet" href="/css/board.css">
+    <script src="/js/auth.js"></script>
+    <script src="/js/board.js"></script>
+</head>
+<body>
+
+<div class="board-container">
+
+    <h1><span id="user-name"></span>의 보드 목록</h1>
+    <button type="submit">Logout</button>
+
+    <div class="board-list"></div>
+
+    <div class="board-btn-container" style="float: right">
+        <button onclick="openAddBoardPopup()">Add Board</button>
+    </div>
+</div>
+
+<!-- 보드 추가 팝업 -->
+<div id="board-add-container" class="popup-container">
+    <div class="popup" style="width:410px; height:auto">
+        <button id="board-close" class="close" onclick="closeAddBoardPopup()">X</button>
+        <h1>🗂 보드 추가하기</h1>
+        <div id="board-input">
+            <span>이름 : </span><input type="text" id="name" name="name" placeholder="보드 이름">
+            <br/>
+            <span>한줄소개 : </span><input type="text" id="introduction" name="introduction" placeholder="한줄소개">
+            <br/>
+        </div>
+        <button id="add-board-btn" class="cta2" onclick="addBoard()">추가하기</button>
+    </div>
+</div>
+
+<!-- 보드 수정 팝업 -->
+<div id="board-update-container" class="popup-container">
+    <div class="popup" style="width:410px; height:auto">
+        <input type="hidden" id="update-board-id" value="">
+        <button id="update-board-close" class="close" onclick="closeUpdateBoardPopup()">X</button>
+        <h1>🗂 보드 수정하기</h1>
+        <div id="update-board-input">
+            <span>이름 : </span><input type="text" id="update-name" name="name" placeholder="보드 이름">
+            <br/>
+            <span>한줄소개 : </span><input type="text" id="update-introduction" name="introduction" placeholder="한줄소개">
+            <br/>
+        </div>
+        <button id="update-board-btn" class="cta2" onclick="updateBoard()">수정하기</button>
+    </div>
+</div>
+
+<!-- 보드 초대 팝업 -->
+<div id="board-invite-container" class="popup-container">
+    <div class="popup" style="width:410px; height:auto">
+        <input type="hidden" id="invite-board-id" value="">
+        <button id="invite-board-close" class="close" onclick="closeInviteBoardPopup()">X</button>
+        <h1>🗂 보드 초대하기</h1>
+        <div id="invite-board-input">
+            <span>email : </span><input type="email" id="invite-email" name="email" placeholder="이메일을 입력해주세요.">
+            <br/>
+            <button onclick="findUser()">Add</button>
+        </div>
+
+        <div class="invite-list"></div>
+
+        <button id="invite-board-btn" class="cta2" onclick="inviteBoard()">초대하기</button>
+    </div>
+</div>
+
+</body>
+</html>

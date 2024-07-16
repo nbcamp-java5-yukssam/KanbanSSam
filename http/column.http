@@ -1,0 +1,30 @@
+### Variables
+@boardId = 1
+@columnId =3
+
+
+### 컬럼 생성
+POST http://localhost:8080/boards/{{boardId}}/columns
+Content-Type: application/json
+Authorization: {{Authorization}}
+
+{
+  "name":"Column 3"
+}
+
+
+
+### 컬럼 수정
+PUT http://localhost:8080/columns/{{columnId}}
+Content-Type: application/json
+Authorization: {{Authorization}}
+
+{
+  "name":"컬럼 이름3를 수정해보자"
+}
+
+### 컬럼 삭제
+DELETE http://localhost:8080/columns/{{columnId}}
+Content-Type: application/json
+Authorization: {{Authorization}}
+
