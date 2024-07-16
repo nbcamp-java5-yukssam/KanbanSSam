@@ -1,9 +1,6 @@
 package com.sparta.kanbanssam.board.service;
 
-import com.sparta.kanbanssam.board.dto.BoardByGuestResponseDto;
-import com.sparta.kanbanssam.board.dto.BoardRequestDto;
-import com.sparta.kanbanssam.board.dto.BoardResponseDto;
-import com.sparta.kanbanssam.board.dto.BoardUpdateRequestDto;
+import com.sparta.kanbanssam.board.dto.*;
 import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.board.entity.Guest;
 import com.sparta.kanbanssam.board.repository.BoardRepository;
@@ -157,6 +154,16 @@ public class BoardService {
 //        return board;
     }
 
+    // 게스트 목록 조회
+    public List<GuestResponseDto> findAllGuestsByBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_BOARD));
+
+        return guestRepository.findAllByBoard(board).stream()
+                .map(GuestResponseDto::new)
+                .toList();
+    }
+
     // 게스트의 보드 목록 조회
     public BoardByGuestResponseDto findAllBoardsByGuest(User user) {
         List<BoardResponseDto> boardList = guestRepository.findAllByUser(user).stream()
@@ -166,15 +173,15 @@ public class BoardService {
 
         return new BoardByGuestResponseDto(user.getName(), boardList);
     }
-
     //UserRole 이 Manager 인지 검증하는 로직
+
     private void checkUserRole(User user) {
         if (!user.getUserRole().equals(UserRole.MANAGER)) {
             throw new CustomException(ErrorType.NO_AUTHENTICATION);
         }
     }
-
     // 유저 아이디 검사
+
     private void checkUserId(User user, Board board) {
         if (!(user.getId().equals(board.getUser().getId()))) {
             throw new CustomException(ErrorType.NOT_FOUND_USER);

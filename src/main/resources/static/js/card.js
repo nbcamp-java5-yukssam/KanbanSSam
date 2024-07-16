@@ -2,12 +2,35 @@
 function openAddCardPopup(columnId) {
     $('#card-add-container').addClass('active');
     $('#columnId').val(columnId);
+
+
+    const boardId = document.querySelector(".column-container").id;
+
+    $.ajax({
+        type: 'GET',
+        url: `/boards/${boardId}/guests`,
+        success: function (response) {
+            for (let i = 0; i < response.length; i++) {
+                let guest = response[i];
+                let tempHtml = addGuestItem(guest);
+                $('#responsiblePerson').append(tempHtml);
+            }
+        },error: err => {
+            alert(err.responseJSON.message);
+        }
+    })
+}
+
+// 보드별 전체 카드 목록 HTML 생성
+function addGuestItem(guest) {
+    return `<option value="${guest.guestEmail}">${guest.guestEmail}</option>`;
 }
 
 // 카드 추가 팝업 닫기
 function closeAddCardPopup() {
     $('#title').val(null);
     $('#responsiblePerson').val(null);
+    $('#responsiblePerson').empty();
     $('#content').val(null);
     $('#deadline').val(null);
     $('#card-add-container').removeClass('active');
@@ -71,23 +94,36 @@ function deleteCard(cardId) {
 
 // 카드 수정 팝업 열기
 function openUpdateCardPopup(cardId, title, responsiblePerson, content, deadline) {
+
+    const boardId = document.querySelector(".column-container").id;
+
+    $.ajax({
+        type: 'GET',
+        url: `/boards/${boardId}/guests`,
+        success: function (response) {
+            for (let i = 0; i < response.length; i++) {
+                let guest = response[i];
+                let tempHtml = addGuestItem(guest);
+                $('#update-responsiblePerson').append(tempHtml);
+            }
+        },error: err => {
+            alert(err.responseJSON.message);
+        }
+    })
+
     $('#card-update-container').addClass('active');
     $('#update-cardId').val(cardId);
     $('#update-title').val(title);
     $('#update-responsiblePerson').val(responsiblePerson);
     $('#update-content').val(content);
     $('#update-deadline').val(deadline);
-    console.log(cardId)
-    console.log(title)
-    console.log(responsiblePerson)
-    console.log(content)
-    console.log(deadline)
 }
 
 // 카드 수정 팝업 닫기
 function closeUpdateCardPopup() {
     $('#update-title').val(null);
     $('#update-responsiblePerson').val(null);
+    $('#update-responsiblePerson').empty();
     $('#update-content').val(null);
     $('#update-deadline').val(null);
     $('#card-update-container').removeClass('active');

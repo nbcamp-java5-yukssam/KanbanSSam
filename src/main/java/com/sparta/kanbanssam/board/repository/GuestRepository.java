@@ -1,5 +1,6 @@
 package com.sparta.kanbanssam.board.repository;
 
+import com.sparta.kanbanssam.board.dto.GuestResponseDto;
 import com.sparta.kanbanssam.board.entity.Board;
 import com.sparta.kanbanssam.board.entity.Guest;
 import com.sparta.kanbanssam.user.entity.User;
@@ -14,4 +15,6 @@ public interface GuestRepository extends JpaRepository<Guest, Long> {
     List<Guest> findAllByUser(User user);
 
     Optional<Guest> findByBoardAndUser(Board board, User u);
+
+    List<Guest> findAllByBoard(Board board);
 }

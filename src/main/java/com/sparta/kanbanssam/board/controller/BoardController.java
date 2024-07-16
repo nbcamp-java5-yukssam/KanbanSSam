@@ -72,6 +72,14 @@ public class BoardController {
         return ResponseEntity.ok(responseDto);
     }
 
+    // 보드 게스트 조회
+    @ResponseBody
+    @GetMapping("/boards/{boardId}/guests")
+    public ResponseEntity<?> findAllGuestsByBoard(@PathVariable Long boardId) {
+        List<GuestResponseDto> responseDtos = boardservice.findAllGuestsByBoard(boardId);
+        return ResponseEntity.ok(responseDtos);
+    }
+
     //상품수정
     @ResponseBody
     @PutMapping("/boards/{boardId}")
