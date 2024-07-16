@@ -21,8 +21,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-
-
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -127,6 +125,14 @@ public class BoardService {
                                 .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_USER))
                 )
                 .toList();
+
+        usertList.forEach(u ->
+                {
+                    guestRepository.findByBoardAndUser(board, u).ifPresent(g -> {
+                        throw new CustomException(ErrorType.DUPLICATE_INVITE_USER);
+                    });
+                }
+        );
 
 
         List<Guest> guestList = usertList.stream()
